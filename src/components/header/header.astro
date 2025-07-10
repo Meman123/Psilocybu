@@ -1,0 +1,223 @@
+---
+import { Image } from 'astro:assets';
+import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
+---
+
+<style>
+  /* --- ESTILOS BASE (MOBILE-FIRST) --- */
+  .header {
+    width: 100%;
+    box-shadow: var(--box-shadow-subtle);
+    background-color: var(--color-background);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  /* Clase que se añade con JS para indicar que el menú está abierto */
+  .header.is-open {
+    /* Puedes añadir estilos aquí si el header debe cambiar cuando el menú está abierto */
+  }
+
+  .headerline {
+    background-color: var(--color-accent);
+    padding: var(--spacing-xs) var(--spacing-md);
+    text-align: right;
+    font-weight: var(--font-weight-semibold);
+    font-size: 1rem;
+  }
+
+  .headerinside {
+    height: 70px; /* Altura estándar en móvil */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--spacing-md);
+  }
+
+  /* Contenedor del logo con padding para que no toque los bordes */
+  .logo-link {
+    padding: var(--spacing-sm) 0; /* 8px de espacio alrededor */
+    display: inline-block; /* Necesario para que el padding funcione bien */
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Controlamos el tamaño del logo con CSS */
+  .logo-img {
+    width: 100px; /* Tamaño del logo en móvil */
+    height: auto;
+  }
+
+  /* Menú de navegación de escritorio: oculto en móvil */
+  .desktop-navbar {
+    display: none; 
+  }
+
+  /* --- Botón Hamburguesa --- */
+  .hamburger-button {
+    display: block;
+    border: none;
+    background: transparent;
+    padding: var(--spacing-sm);
+    cursor: pointer;
+    z-index: 110; /* Por encima del header pero debajo del menú */
+  }
+  .hamburger-button .icon {
+    width: 24px;
+    height: 24px;
+    color: var(--color-text);
+  }
+  .hamburger-button .icon-close {
+    display: none; /* Oculto por defecto */
+  }
+
+  /* Cuando el menú está abierto, muestra la 'X' y oculta la hamburguesa */
+  .header.is-open .hamburger-button .icon-open {
+    display: none;
+  }
+  .header.is-open .hamburger-button .icon-close {
+    display: block;
+  }
+
+  /* --- Menú Móvil Desplegable --- */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-top: 100px; /* Espacio para el header */
+    background-color: var(--color-background);
+    z-index: 105; /* Por encima del header */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+
+    /* Transición para aparecer y desaparecer */
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    visibility: hidden;
+  }
+  .header.is-open .mobile-menu {
+    transform: translateX(0);
+    visibility: visible;
+  }
+  .mobile-menu a {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+  }
+
+
+  /* --- TABLET Y SUPERIOR (768px) --- */
+  @media (min-width: 768px) {
+    .headerinside {
+      height: 80px;
+      padding: 0 var(--spacing-xl);
+    }
+
+    .headerline {
+      padding: var(--spacing-xs) var(--spacing-xl);
+      text-align: right; /* Centrado en tablet */
+      font-size: 1.2rem;
+    }
+
+    .logo-img {
+      width: 122px; /* Tamaño del logo en tablet */
+    }
+    .hamburger-button, .mobile-menu {
+      display: none; /* Ocultamos todo lo relacionado con el menú móvil */
+    }
+    .desktop-navbar {
+      display: flex; /* Mostramos la navegación de escritorio */
+      align-items: center;
+      gap: 24px; /* Un poco menos de espacio en tablet */
+    }
+    .nav-link {
+      font-weight: var(--font-weight-bold);
+      padding: var(--spacing-xs);
+      font-size: 1rem;
+    }
+    .nav-button {
+      font-weight: var(--font-weight-bold);
+      border-radius: var(--border-radius-medium);
+      background-color: var(--color-accent);
+      border: var(--border-width-thin) solid var(--color-border);
+      padding: 10px 16px;
+    }
+  }
+
+  /* --- LAPTOP Y SUPERIOR (1024px) --- */
+  @media (min-width: 1024px) {
+    .logo-img {
+      width: 140px; /* Un logo un poco más grande para pantallas grandes */
+    }
+    .desktop-navbar {
+      gap: var(--spacing-lg); /* Espacio original en desktop */
+    }
+     .nav-link {
+      font-size: 1.1rem;
+    }
+  }
+</style>
+
+<header class="header" id="site-header">
+  <div class="headerline">
+    <p>cultivo mutuo :)</p>
+  </div>
+
+  <div class="headerinside">
+    <a href="/" class="logo-link" aria-label="Página de inicio de Psilocybu">
+      <Image 
+        src={logoAsset} 
+        alt="Logo de Psilocybu"
+        format="webp"
+        quality="high"
+        class="logo-img"
+      />
+    </a>
+    
+    <nav class="desktop-navbar">
+      <a href="/autocultivo" class="nav-link">AutoCultivo</a>
+      <a href="/tienda" class="nav-link">Tienda</a>
+      <a href="/asistencia" class="nav-link">Asistencia</a>
+      <a href="/blog" class="nav-link">Blog</a>
+      <a href="https://wa.me/xxxxxxxxxx" class="nav-button" target="_blank" rel="noopener noreferrer">Whatsapp</a>
+    </nav>
+    
+    <button class="hamburger-button" id="hamburger-btn" aria-label="Abrir menú">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon icon-open">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon icon-close">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <nav class="mobile-menu" id="mobile-menu">
+    <a href="/autocultivo">AutoCultivo</a>
+    <a href="/tienda">Tienda</a>
+    <a href="/asistencia">Asistencia</a>
+    <a href="/blog">Blog</a>
+    <a href="https://wa.me/xxxxxxxxxx" target="_blank" rel="noopener noreferrer">Whatsapp</a>
+  </nav>
+</header>
+
+<script is:inline>
+  // Script para manejar la apertura y cierre del menú móvil
+  const header = document.getElementById('site-header');
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+
+  if (hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', () => {
+      // La magia sucede aquí: añadimos o quitamos la clase 'is-open' del header.
+      // El CSS se encarga del resto.
+      if (header) {
+        header.classList.toggle('is-open');
+      }
+    });
+  }
+</script>
