@@ -1,26 +1,24 @@
 ---
-// ---
+import { Image } from 'astro:assets';
+// Asegúrate de que la imagen esté en src/assets/
+import growkitImage from '@/assets/growkit-psilocybu.png'; 
 ---
+
 <style>
-  .hero-section {
+  .intro-section {
+    background-color: var(--color-background);
+  }
+
+  .video-wrapper {
+    width: 100%;
     background-color: #000;
   }
 
   .video-container {
     width: 100%;
     aspect-ratio: 16 / 9;
-    margin: auto; 
-    
-    /* --- CÁLCULO ACTUALIZADO --- */
-    /* Altura máxima = 100% de la pantalla MENOS la altura del header móvil */
-    max-height: calc(100vh - var(--header-height-mobile));
-  }
-
-  /* Ajustamos el cálculo para la altura del header en pantallas grandes */
-  @media (min-width: 768px) {
-    .video-container {
-      max-height: calc(100vh - var(--header-height-desktop));
-    }
+    max-height: 75vh;
+    margin: auto;
   }
 
   .video-container iframe {
@@ -28,17 +26,187 @@
     height: 100%;
     border: none;
   }
+
+  .content-wrapper {
+    max-width: 1100px;
+    margin: auto;
+    padding: var(--spacing-xl) var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    align-items: center;
+    text-align: center;
+  }
+
+  .text-column {
+    max-width: 500px;
+  }
+  
+  .headline {
+    font-size: 2.5rem;
+    font-weight: var(--font-weight-bold);
+    line-height: 1.1;
+  }
+
+  .headline .highlight {
+    color: var(--color-accent);
+  }
+  
+  .features-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-md) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    background-color: #f7fafc;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-medium);
+  }
+  
+  .feature-item .icon {
+    font-family: 'Material Icons';
+    color: var(--color-accent);
+  }
+
+  .feature-item p {
+    font-weight: var(--font-weight-semibold);
+    color: #333;
+  }
+
+  .product-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .product-image-wrapper {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  /* Hacemos que la imagen generada por Astro sea responsiva */
+  .product-image-wrapper :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    width: 100%;
+  }
+  
+  .btn {
+    font-weight: var(--font-weight-bold);
+    padding: 12px 24px;
+    border-radius: 9999px;
+    box-shadow: var(--box-shadow-subtle);
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1rem;
+  }
+  
+  .btn:hover {
+    transform: scale(1.05);
+  }
+  
+  .btn-primary {
+    background-color: var(--color-accent);
+    color: var(--color-text);
+  }
+  
+  .btn-secondary {
+    background-color: var(--color-background);
+    border: var(--border-width-thin) solid #cbd5e0;
+  }
+
+  /* --- Responsive --- */
+  @media (min-width: 900px) {
+    .content-wrapper {
+      flex-direction: row;
+      text-align: left;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .feature-item {
+      background: transparent;
+      padding-left: 0;
+    }
+    
+    .text-column {
+      width: 50%;
+    }
+
+    .product-column {
+      width: 45%;
+    }
+
+    .cta-buttons {
+      max-width: none;
+      align-items: stretch;
+    }
+  }
 </style>
 
-<section class="hero-section">
-  <div class="video-container">
-    <iframe 
-      src="https://player.vimeo.com/video/949386936?autoplay=1&loop=1&muted=1&background=1&dnt=1" 
-      allow="autoplay; fullscreen; picture-in-picture"
-      loading="lazy"
-      title="Video de fondo de Psilocybu">
-    </iframe>
+<section class="intro-section">
+  <div class="video-wrapper">
+    <div class="video-container">
+      <iframe 
+        src="https://player.vimeo.com/video/949386936?autoplay=1&loop=1&muted=1&background=1&dnt=1&quality=720p" 
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        loading="lazy"
+        title="Video de fondo de Psilocybu">
+      </iframe>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="text-column">
+      <h1 class="headline">¡Cosecha tus honguitos en solo <span class="highlight">2 semanas!</span></h1>
+      <ul class="features-list">
+        <li class="feature-item">
+          <span class="icon">check_circle</span>
+          <p>Listo para usar, fácil y rápido</p>
+        </li>
+        <li class="feature-item">
+          <span class="icon">verified_user</span>
+          <p>100% seguro y de máxima calidad</p>
+        </li>
+        <li class="feature-item">
+          <span class="icon">eco</span>
+          <p>Conecta con la naturaleza sin experiencia</p>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="product-column">
+      <div class="product-image-wrapper">
+        <Image 
+          src={growkitImage}
+          alt="Growkit de Psilocybu con hongos Albino Averys"
+          format="webp"
+          quality={90}
+          width={600}
+          height={600}
+        />
+      </div>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-primary">Compra tu GrowKit</a>
+        <a href="#" class="btn btn-secondary">Cómo funciona</a>
+      </div>
+    </div>
   </div>
 </section>
-
-<script src="https://player.vimeo.com/api/player.js"></script>

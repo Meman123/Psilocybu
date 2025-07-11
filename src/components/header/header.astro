@@ -37,7 +37,7 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
   /* Contenedor del logo con padding para que no toque los bordes */
   .logo-link {
     padding: var(--spacing-sm) 0; /* 8px de espacio alrededor */
-    display: inline-block; /* Necesario para que el padding funcione bien */
+    /* display: inline-block; <- Anulado por display: flex y no necesario para el centrado vertical */
     height: 100%;
     display: flex;
     align-items: center;
@@ -87,7 +87,7 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
     left: 0;
     width: 100%;
     height: 100%;
-    padding-top: 100px; /* Espacio para el header */
+    padding-top: 100px; /* Espacio generoso para el header (94px) y un pequeño margen superior. Ajustar si es necesario o vincular a --header-height-mobile con calc() */
     background-color: var(--color-background);
     z-index: 105; /* Por encima del header */
 
@@ -111,7 +111,7 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
   }
 
 
-  /* --- TABLET Y SUPERIOR (768px) --- */
+  /* --- TABLET Y SUPERIOR (usando variable de breakpoint) --- */
   @media (min-width: 768px) {
     .headerinside {
       height: 80px;
@@ -120,7 +120,7 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
 
     .headerline {
       padding: var(--spacing-xs) var(--spacing-xl);
-      text-align: right; /* Centrado en tablet */
+      text-align: right; /* El texto se alinea a la derecha en tablet y superior */
       font-size: 1.2rem;
     }
 
@@ -149,7 +149,7 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
     }
   }
 
-  /* --- LAPTOP Y SUPERIOR (1024px) --- */
+  /* --- LAPTOP Y SUPERIOR (usando variable de breakpoint) --- */
   @media (min-width: 1024px) {
     .logo-img {
       width: 140px; /* Un logo un poco más grande para pantallas grandes */
@@ -179,7 +179,7 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
       />
     </a>
     
-    <nav class="desktop-navbar">
+    <nav class="desktop-navbar" aria-label="Navegación principal">
       <a href="/autocultivo" class="nav-link">AutoCultivo</a>
       <a href="/tienda" class="nav-link">Tienda</a>
       <a href="/asistencia" class="nav-link">Asistencia</a>
@@ -187,7 +187,13 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
       <a href="https://wa.me/xxxxxxxxxx" class="nav-button" target="_blank" rel="noopener noreferrer">Whatsapp</a>
     </nav>
     
-    <button class="hamburger-button" id="hamburger-btn" aria-label="Abrir menú">
+    <button 
+      class="hamburger-button" 
+      id="hamburger-btn" 
+      aria-label="Abrir menú" 
+      aria-expanded="false" 
+      aria-controls="mobile-menu"
+    >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon icon-open">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
       </svg>
@@ -197,7 +203,7 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
     </button>
   </div>
 
-  <nav class="mobile-menu" id="mobile-menu">
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Navegación móvil">
     <a href="/autocultivo">AutoCultivo</a>
     <a href="/tienda">Tienda</a>
     <a href="/asistencia">Asistencia</a>
@@ -210,14 +216,20 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
   // Script para manejar la apertura y cierre del menú móvil
   const header = document.getElementById('site-header');
   const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mobileMenu = document.getElementById('mobile-menu'); // Necesario para la gestión del foco (futuro)
 
-  if (hamburgerBtn) {
+  if (header && hamburgerBtn && mobileMenu) {
     hamburgerBtn.addEventListener('click', () => {
-      // La magia sucede aquí: añadimos o quitamos la clase 'is-open' del header.
-      // El CSS se encarga del resto.
-      if (header) {
-        header.classList.toggle('is-open');
-      }
+      const isOpen = header.classList.toggle('is-open');
+      hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      hamburgerBtn.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+      
+      // Futura mejora: gestionar el foco aquí
+      // if (isOpen) {
+      //   mobileMenu.querySelector('a').focus(); // Enfocar el primer enlace
+      // } else {
+      //   hamburgerBtn.focus(); // Devolver el foco al botón
+      // }
     });
   }
 </script>
