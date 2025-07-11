@@ -1,66 +1,71 @@
 ---
 import { Image } from 'astro:assets';
-// Asegúrate de que la imagen esté en src/assets/
+// Asegúrate de que este sea el nombre y la ruta correcta de tu imagen en src/assets
 import growkitImage from '@/assets/growkit-psilocybu.png'; 
 ---
 
 <style>
   .intro-section {
-    background-color: var(--color-background);
+    /* Mantiene la estructura de secciones separadas */
   }
 
+  /* --- Módulo de Video --- */
   .video-wrapper {
-    width: 100%;
     background-color: #000;
   }
-
   .video-container {
     width: 100%;
     aspect-ratio: 16 / 9;
-    max-height: 75vh;
-    margin: auto;
+    margin: auto; 
+    max-height: calc(100vh - var(--header-height-mobile));
   }
-
+  @media (min-width: 768px) {
+    .video-container {
+      max-height: calc(100vh - var(--header-height-desktop));
+    }
+  }
   .video-container iframe {
     width: 100%;
     height: 100%;
     border: none;
   }
 
+  /* --- Módulo de Contenido --- */
   .content-wrapper {
+    background-color: var(--color-background);
+    padding: var(--spacing-xl) 0;
+  }
+  .content-container {
     max-width: 1100px;
-    margin: auto;
-    padding: var(--spacing-xl) var(--spacing-lg);
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
-    align-items: center;
-    text-align: center;
   }
 
+  /* --- Columna de Texto (Izquierda) --- */
   .text-column {
-    max-width: 500px;
+    flex: 1.2; /* Damos un poco más de espacio al texto */
+    text-align: center;
   }
-  
   .headline {
     font-size: 2.5rem;
     font-weight: var(--font-weight-bold);
     line-height: 1.1;
+    margin-bottom: var(--spacing-md);
   }
-
   .headline .highlight {
-    color: var(--color-accent);
+    color: var(--color-accent); /* Mantenemos el highlight solo en una parte */
   }
-  
   .features-list {
     list-style: none;
     padding: 0;
-    margin: var(--spacing-md) 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
   }
-  
   .feature-item {
     display: flex;
     align-items: center;
@@ -69,44 +74,40 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--border-radius-medium);
   }
-  
   .feature-item .icon {
     font-family: 'Material Icons';
     color: var(--color-accent);
   }
-
   .feature-item p {
     font-weight: var(--font-weight-semibold);
     color: #333;
   }
 
+  /* --- Columna de Producto (Derecha) --- */
   .product-column {
+    flex: 1; /* El producto ocupa un poco menos de espacio */
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-lg);
-    width: 100%;
-    max-width: 400px;
   }
-  
   .product-image-wrapper {
     width: 100%;
-    max-width: 300px;
+    max-width: 320px; /* Controlamos el tamaño máximo de la imagen */
+    margin: 0 auto;
   }
-
   /* Hacemos que la imagen generada por Astro sea responsiva */
   .product-image-wrapper :global(img) {
     width: 100%;
     height: auto;
   }
-
   .cta-buttons {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
     width: 100%;
+    max-width: 320px;
   }
-  
   .btn {
     font-weight: var(--font-weight-bold);
     padding: 12px 24px;
@@ -116,16 +117,13 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
     text-align: center;
     font-size: 1rem;
   }
-  
   .btn:hover {
     transform: scale(1.05);
   }
-  
   .btn-primary {
     background-color: var(--color-accent);
     color: var(--color-text);
   }
-  
   .btn-secondary {
     background-color: var(--color-background);
     border: var(--border-width-thin) solid #cbd5e0;
@@ -133,31 +131,22 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
 
   /* --- Responsive --- */
   @media (min-width: 900px) {
-    .content-wrapper {
+    .content-container {
       flex-direction: row;
-      text-align: left;
       align-items: center;
-      justify-content: space-between;
     }
-    
+    .text-column {
+      text-align: left;
+    }
     .feature-item {
       background: transparent;
       padding-left: 0;
     }
-    
-    .text-column {
-      width: 50%;
-    }
-
-    .product-column {
-      width: 45%;
-    }
-
     .cta-buttons {
-      max-width: none;
-      align-items: stretch;
+      flex-direction: row;
     }
   }
+
 </style>
 
 <section class="intro-section">
@@ -167,45 +156,48 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
         src="https://player.vimeo.com/video/949386936?autoplay=1&loop=1&muted=1&background=1&dnt=1&quality=720p" 
         frameborder="0"
         allow="autoplay; fullscreen; picture-in-picture"
-        loading="lazy"
+        loading="eager"
+        allowfullscreen="allowfullscreen"
         title="Video de fondo de Psilocybu">
       </iframe>
     </div>
   </div>
 
   <div class="content-wrapper">
-    <div class="text-column">
-      <h1 class="headline">¡Cosecha tus honguitos en solo <span class="highlight">2 semanas!</span></h1>
-      <ul class="features-list">
-        <li class="feature-item">
-          <span class="icon">check_circle</span>
-          <p>Listo para usar, fácil y rápido</p>
-        </li>
-        <li class="feature-item">
-          <span class="icon">verified_user</span>
-          <p>100% seguro y de máxima calidad</p>
-        </li>
-        <li class="feature-item">
-          <span class="icon">eco</span>
-          <p>Conecta con la naturaleza sin experiencia</p>
-        </li>
-      </ul>
-    </div>
-    
-    <div class="product-column">
-      <div class="product-image-wrapper">
-        <Image 
-          src={growkitImage}
-          alt="Growkit de Psilocybu con hongos Albino Averys"
-          format="webp"
-          quality={90}
-          width={600}
-          height={600}
-        />
+    <div class="content-container">
+      <div class="text-column">
+        <h1 class="headline">¡Cosecha tus honguitos en solo <span class="highlight">2 semanas!</span></h1>
+        <ul class="features-list">
+          <li class="feature-item">
+            <span class="icon">check_circle</span>
+            <p>Listo para usar, fácil y rápido</p>
+          </li>
+          <li class="feature-item">
+            <span class="icon">verified_user</span>
+            <p>100% seguro y de máxima calidad</p>
+          </li>
+          <li class="feature-item">
+            <span class="icon">eco</span>
+            <p>Conecta con la naturaleza sin experiencia</p>
+          </li>
+        </ul>
       </div>
-      <div class="cta-buttons">
-        <a href="#" class="btn btn-primary">Compra tu GrowKit</a>
-        <a href="#" class="btn btn-secondary">Cómo funciona</a>
+      
+      <div class="product-column">
+        <div class="product-image-wrapper">
+          <Image 
+            src={growkitImage}
+            alt="Growkit de Psilocybu con hongos Albino Averys"
+            format="webp"
+            quality={90}
+            width={400}
+            height={400}
+          />
+        </div>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-primary">Compra tu GrowKit</a>
+          <a href="#" class="btn btn-secondary">Cómo funciona</a>
+        </div>
       </div>
     </div>
   </div>
