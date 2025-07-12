@@ -7,7 +7,7 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
 <style>
 /* — Bloque principal */
 .features{
-  background:var(--color-background);
+  background:var(--color-background-alt);
   padding-block:var(--spacing-xl);
 }
 
@@ -26,7 +26,7 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   display:flex;
   flex-direction:column;
   gap:var(--spacing-lg);
-  text-align:center;
+  text-align:left;
 }
 .features__product{
   --product-col-width:300px;
@@ -40,7 +40,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
 .headline{
   font:clamp(2rem,4vw,3rem)/1.1 var(--font-family-headings,'Quicksand');
   font-weight:700;
-  filter:drop-shadow(-1px 2px .1px hsla(0, 0%, 0%, 0.8));
 }
 .headline .highlight{color:var(--color-accent);}
 
@@ -50,8 +49,8 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   display:flex;
   flex-direction:column;
   gap:12px;
-  margin-inline:auto;
-  align-items:center;
+  margin-inline:0;
+  align-items:flex-start;
 }
 .feature-item{
   display:flex;
@@ -130,8 +129,9 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
 /* — Responsive */
 @media (min-width:900px){
   .features__container{
-    grid-template-columns:1.2fr 1fr;
+    grid-template-columns:1.5fr 1fr;
     align-items:center;
+    gap: var(--spacing-xl);
   }
   .features__text{text-align:left;}
   .cta-buttons{flex-direction:row; }

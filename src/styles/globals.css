@@ -7,6 +7,7 @@
   --color-accent: #fffc55;
   --color-text: #000000;
   --color-background: #ffffff;
+  --color-background-alt: #f7f7f7;
   --color-border: #6e6e6e;
 
   /* Tipografía */
@@ -28,7 +29,7 @@
   /* Bordes y Sombras */
   --border-radius-medium: 10px;
   --border-width-thin: 1px;
-  --box-shadow-subtle: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --box-shadow-subtle: 0 2px 8px rgba(0,0,0,0.08);
 
     /* Breakpoints para diseño responsivo */
   --bp-tablet: 768px;

@@ -84,13 +84,13 @@ const videos: Video[] = [
   aspect-ratio: 16 / 9;
   flex-shrink: 0;
   width: clamp(280px, 70vw, 320px);
-  box-shadow: 0 4px 16px -2px hsla(0, 0%, 0%, 0.3);
+  box-shadow: var(--box-shadow-subtle);
   transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease, opacity .3s ease;
   cursor: pointer;
 }
 .video-card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 8px 24px -4px hsla(0, 0%, 0%, 0.5);
+  box-shadow: 0 8px 24px -4px hsla(0, 0%, 0%, 0.2);
   border-color: var(--color-accent);
 }
 .video-card:active {
@@ -241,17 +241,17 @@ dialog.video-modal.is-closing {
 @media (min-width: 768px) {
   .tutorials__scroll-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     margin-inline: 0;
     padding-inline: 0;
   }
   .video-card { width: auto; }
 }
 @media (min-width: 1024px) {
-  .tutorials__scroll-container { grid-template-columns: repeat(2, 1fr); }
+  .tutorials__scroll-container { grid-template-columns: repeat(3, 1fr); }
 }
 @media (min-width: 1400px) {
-  .tutorials__scroll-container { grid-template-columns: repeat(3, 1fr); }
+  .tutorials__scroll-container { grid-template-columns: repeat(4, 1fr); }
 }
 </style>
 

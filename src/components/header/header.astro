@@ -9,11 +9,17 @@ import logoAsset from '@/assets/Logo.png';
   /* ---------- ESTILOS BASE (MOBILE-FIRST) ---------- */
   .header {
     width: 100%;
-    box-shadow: var(--box-shadow-subtle);
+    /* La sombra se añade con JS al hacer scroll */
+    box-shadow: none;
     background-color: var(--color-background);
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .header.has-shadow {
+    box-shadow: var(--box-shadow-subtle);
   }
 
   .headerline {
@@ -176,11 +182,32 @@ import logoAsset from '@/assets/Logo.png';
   const header = document.getElementById('site-header');
   const hamburgerBtn = document.getElementById('hamburger-btn');
 
+  // Lógica del menú hamburguesa
   if (header && hamburgerBtn) {
     hamburgerBtn.addEventListener('click', () => {
       const isOpen = header.classList.toggle('is-open');
       hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       hamburgerBtn.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
     });
+  }
+
+  // Lógica de la sombra del header al hacer scroll
+  if (header) {
+    const scrollObserver = new IntersectionObserver(
+      ([entry]) => {
+        header.classList.toggle('has-shadow', !entry.isIntersecting);
+      },
+      { rootMargin: '0px', threshold: 1 }
+    );
+
+    // Para que funcione, necesitamos un elemento ancla justo después del header.
+    // Lo crearemos con JS para no ensuciar el HTML.
+    const headerAnchor = document.createElement('div');
+    headerAnchor.style.position = 'absolute';
+    headerAnchor.style.top = '0';
+    headerAnchor.style.height = '1px';
+    headerAnchor.style.width = '1px';
+    header.insertAdjacentElement('afterend', headerAnchor);
+    scrollObserver.observe(headerAnchor);
   }
 </script>
