@@ -1,248 +1,189 @@
 ---
+// src/components/Features.astro
 import { Image } from 'astro:assets';
-// Asegúrate de que los nombres de archivo coincidan con los que guardaste en src/assets
-import featureImage from '@/assets/growkit-psilocybu.jpg';
-import logoBadge from '@/assets/Logo.png';
+import growkitImage from '@/assets/growkit-psilocybu.png';
 ---
 
 <style>
-  .features-section-v2 {
-    /* Tailwind: py-16 md:py-24 bg-white */
-    background-color: var(--color-background);
-    padding-top: var(--spacing-xl);
-    padding-bottom: var(--spacing-xl);
-  }
+/* — Bloque principal */
+.features{
+  background:var(--color-background);
+  padding-block:var(--spacing-xl);
+}
 
-  .container {
-    max-width: 1280px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);
-  }
+/* — Grid */
+.features__container{
+  max-width:var(--site-max-width);
+  margin-inline:auto;
+  padding-inline:var(--side-gutter);
+  display:grid;
+  gap:var(--spacing-xl);
+  grid-template-columns:1fr;
+}
 
-  .content-wrapper {
-    /* Tailwind: flex flex-col md:flex-row items-center gap-12 */
-    display: flex;
-    flex-direction: column; /* Mobile-first: stacked vertically */
-    align-items: center;
-    gap: var(--spacing-xl);
-  }
+/* — Columnas */
+.features__text{
+  display:flex;
+  flex-direction:column;
+  gap:var(--spacing-lg);
+  text-align:center;
+}
+.features__product{
+  --product-col-width:400px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:var(--spacing-lg);
+}
 
-  .image-column {
-    /* Tailwind: md:w-1/2 relative */
-    width: 100%;
-    position: relative;
-  }
+/* — Tipografía y lista */
+.headline{
+  font:clamp(2rem,4vw,3.5rem)/1.1 var(--font-family-headings,'Quicksand');
+  font-weight:700;
+  filter:drop-shadow(-1px 2px .1px hsla(0, 0%, 0%, 0.8));
+}
+.headline .highlight{color:var(--color-accent);}
 
-  .main-image {
-    /* Tailwind: rounded-lg shadow-2xl w-full */
-    border-radius: var(--border-radius-medium);
-    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-    width: 100%;
-    height: auto;
-  }
+.features-list{
+  list-style:none;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-inline:auto;
+  align-items:center;
+}
+.feature-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:500;
+  font-size:1.2rem;
+}
+.feature-item::before{
+  content:"";
+  flex-shrink:0;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--color-accent);
+}
 
-  .logo-badge {
-    /* Tailwind: absolute top-4 left-4 bg-white p-2 rounded-md shadow-lg */
-    position: absolute;
-    top: var(--spacing-sm);
-    left: var(--spacing-sm);
-    background-color: var(--color-background);
-    padding: var(--spacing-xs);
-    border-radius: 6px;
-    box-shadow: var(--box-shadow-subtle);
-  }
+/* — Badge */
+.badge{
+  display:inline-block;
+  background:var(--color-accent);
+  color:#000;
+  font-weight:600;
+  padding:4px 12px;
+  border-radius:8px;
+  font-size:.95rem;
+  box-shadow:0 1px 4px rgb(0 0 0/.12);
+}
+.badge-shipping{margin-bottom:8px;}
 
-  .logo-badge img {
-    height: 32px;
-    width: auto;
-  }
+/* — Imagen */
+.product-img{
+  width:100%;
+  max-width:var(--product-col-width);
+}
+.product-img :global(img){
+  display:block;
+  width:100%;
+  height:auto;
+}
 
-  .text-column {
-    /* Tailwind: md:w-1/2 text-center md:text-left */
-    width: 100%;
-    text-align: center;
-  }
+/* — Botones */
+.cta-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  width:100%;
+  max-width:var(--product-col-width);
+}
+.btn{
+  flex:1;
+  padding-block:12px;
+  border-radius:12px;
+  font:600 1rem/1 var(--font-family-headings,'Quicksand');
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  box-shadow:0 3px 6px rgb(0 0 0/.5);
+  transition:transform .25s ease;
+  text-align:center;
+}
+.btn:hover{transform:scale(1.05);}
+.btn:focus-visible{
+  outline:3px solid var(--color-accent);
+  outline-offset:3px;
+}
+.btn-primary{
+  background:var(--color-accent);
+  color:#000;
+}
+.btn-secondary{
+  background:#fff;
+  color:#000;
+}
 
-  .headline {
-    /* Tailwind: text-4xl md:text-5xl font-bold ... leading-tight */
-    font-size: 2.5rem;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text);
-    margin-bottom: var(--spacing-sm);
-    line-height: 1.2;
+/* — Responsive */
+@media (min-width:900px){
+  .features__container{
+    grid-template-columns:1.2fr 1fr;
+    align-items:center;
   }
+  .features__text{text-align:left;}
+  .cta-buttons{flex-direction:row;}
+  .features-list{
+    margin-inline:0;
+    align-items:flex-start;
+    display:grid;
+    grid-template-columns:1fr 1fr; /* dos columnas de bullets */
+    gap:12px 48px;
+  }
+}
 
-  .headline .highlight {
-    color: var(--color-accent);
-  }
-
-  .subheadline {
-    /* Tailwind: text-xl text-gray-600 mb-8 */
-    font-size: 1.25rem;
-    color: #4a5568;
-    margin-bottom: var(--spacing-lg);
-  }
-
-  .features-list-box {
-    /* Tailwind: bg-gray-100 p-6 rounded-lg shadow-inner */
-    background-color: #f7fafc;
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius-medium);
-    box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
-  }
-
-  .features-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-  }
-  
-  .feature-item {
-    /* Tailwind: flex items-start */
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-sm);
-    text-align: left;
-  }
-
-  .feature-item .icon {
-    font-family: 'Material Icons';
-    color: var(--color-accent);
-    margin-top: 4px; /* Align icon with text */
-  }
-
-  .feature-item h3 {
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text);
-  }
-
-  .feature-item p {
-    font-size: 0.875rem;
-    color: #4a5568;
-    line-height: 1.5;
-  }
-
-  .cta-buttons {
-    margin-top: var(--spacing-lg);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-
-  .btn {
-    font-weight: var(--font-weight-bold);
-    padding: 12px 32px;
-    border-radius: 9999px; /* rounded-full */
-    box-shadow: var(--box-shadow-subtle);
-    transition: all 0.3s ease;
-    text-align: center;
-    font-size: 1.125rem;
-  }
-
-  .btn:hover {
-    transform: scale(1.05);
-  }
-  
-  .btn-primary {
-    background-color: var(--color-accent);
-    color: var(--color-text);
-  }
-
-  .btn-secondary {
-    background-color: var(--color-background);
-    color: var(--color-text);
-    border: var(--border-width-thin) solid #cbd5e0;
-  }
-
-  /* --- Responsive Styles --- */
-  @media (min-width: 768px) {
-    .features-section-v2 {
-      padding-top: calc(var(--spacing-xl) * 2);
-      padding-bottom: calc(var(--spacing-xl) * 2);
-    }
-    .content-wrapper {
-      flex-direction: row; /* Two columns on desktop */
-    }
-    .image-column, .text-column {
-      width: 50%;
-    }
-    .text-column {
-      text-align: left;
-    }
-    .headline {
-      font-size: 3rem;
-    }
-    .cta-buttons {
-      flex-direction: row;
-      justify-content: flex-start;
-    }
-  }
+@media (max-width:500px){
+  .feature-item{font-size:1.05rem;}
+}
 </style>
 
-<section class="features-section-v2">
-  <div class="container">
-    <div class="content-wrapper">
-      <div class="image-column">
-        <Image 
-          src={featureImage} 
-          alt="GrowKit de PSILOCYBU en una mesa de madera con fondo hogareño desenfocado"
-          class="main-image"
+<section class="features" id="features">
+  <div class="features__container">
+    <div class="features__text">
+      <h2 class="headline">
+        ¡Cosecha tus honguitos en solo <span class="highlight">2&nbsp;semanas!</span>
+      </h2>
+      <ul class="features-list">
+        <li class="feature-item">Incluye 1&nbsp;L de micelio fresco (Albino Averys)</li>
+        <li class="feature-item">Bolsa #bagtek estéril y de alta calidad</li>
+        <li class="feature-item">Setas listas en 2&nbsp;semanas</li>
+        <li class="feature-item">Atomizador, clip e instructivo incluidos</li>
+        <li class="feature-item">Sin experiencia ni equipos sofisticados</li>
+        <li class="feature-item">5&nbsp;min de atención cada 7&nbsp;días</li>
+        <li class="feature-item">Variedad resistente y de rápido crecimiento</li>
+        <li class="feature-item">Envío gratis nacional</li>
+        <li class="feature-item">Soporte experto paso a paso</li>
+      </ul>
+    </div>
+
+    <div class="features__product">
+      <div class="badge badge-shipping">🚚 Envío gratis nacional</div>
+      <div class="product-img">
+        <Image
+          src={growkitImage}
+          alt="Growkit de Psilocybu con hongos Albino Averys"
+          width={400}
+          height={400}
+          sizes="(min-width:900px) 320px, 80vw"
           format="webp"
-          quality={80}
+          quality={90}
         />
-        <div class="logo-badge">
-          <Image 
-            src={logoBadge}
-            alt="Logo pequeño de PSILOCYBU"
-            format="webp"
-            quality="max"
-          />
-        </div>
       </div>
-      <div class="text-column">
-        <h1 class="headline">¡Cosecha tus honguitos en solo <span class="highlight">2 semanas!</span></h1>
-        <p class="subheadline">Sin experiencia, sin equipos caros, solo 5 minutos a la semana.</p>
-        <div class="features-list-box">
-          <ul class="features-list">
-            <li class="feature-item">
-              <span class="icon">check_circle</span>
-              <div>
-                <h3>Listo para usar</h3>
-                <p>Incluye micelio maduro en #bagtek + atomizador, clip e instructivo.</p>
-              </div>
-            </li>
-            <li class="feature-item">
-              <span class="icon">watch_later</span>
-              <div>
-                <h3>Fácil y Rápido</h3>
-                <p>Solo 10 atomizadas cada 5 días. ¡Así de simple!</p>
-              </div>
-            </li>
-            <li class="feature-item">
-              <span class="icon">verified_user</span>
-              <div>
-                <h3>100% Seguro y Accesible</h3>
-                <p>Cultivo de Psilocybe cubensis var. Albino Averys: máxima potencia y calidad a bajo costo.</p>
-              </div>
-            </li>
-             <li class="feature-item">
-              <span class="icon">eco</span>
-              <div>
-                <h3>Conecta con la naturaleza</h3>
-                <p>Ideal para adultos que buscan autocultivar sin experiencia previa.</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="cta-buttons">
-          <a href="#" class="btn btn-primary">Compra tu GrowKit aquí</a>
-          <a href="#" class="btn btn-secondary">Ver cómo funciona</a>
-        </div>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-primary">Compra tu GrowKit</a>
+        <a href="#" class="btn btn-secondary">¿Cómo funciona?</a>
       </div>
     </div>
   </div>

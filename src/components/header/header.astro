@@ -1,10 +1,12 @@
 ---
 import { Image } from 'astro:assets';
-import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
+import logoAsset from '@/assets/Logo.png';
 ---
 
 <style>
-  /* --- ESTILOS BASE (MOBILE-FIRST) --- */
+
+
+  /* ---------- ESTILOS BASE (MOBILE-FIRST) ---------- */
   .header {
     width: 100%;
     box-shadow: var(--box-shadow-subtle);
@@ -13,90 +15,68 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
     top: 0;
     z-index: 100;
   }
-  /* Clase que se añade con JS para indicar que el menú está abierto */
-  .header.is-open {
-    /* Puedes añadir estilos aquí si el header debe cambiar cuando el menú está abierto */
-  }
 
   .headerline {
     background-color: var(--color-accent);
-    padding: var(--spacing-xs) var(--spacing-md);
-    text-align: right;
-    font-weight: var(--font-weight-semibold);
-    font-size: 1rem;
+    padding-block: var(--spacing-xs);
   }
 
+  .headerline__content {
+  max-width: var(--site-max-width);
+  margin-inline: auto;
+  padding-inline: var(--side-gutter);
+  font-weight: var(--font-weight-semibold);
+  font-size: 1.1rem;
+  text-align: right;
+}
+
   .headerinside {
-    height: 70px; /* Altura estándar en móvil */
+    height: 70px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--spacing-md);
+    padding-inline: var(--side-gutter); /* mismo gutter que el resto */
+    margin-inline: auto;                /* centra el bloque interno */
+    max-width: var(--site-max-width);   /* ← límite global */
   }
 
-  /* Contenedor del logo con padding para que no toque los bordes */
+  /* ---------- LOGO ---------- */
   .logo-link {
-    padding: var(--spacing-sm) 0; /* 8px de espacio alrededor */
-    /* display: inline-block; <- Anulado por display: flex y no necesario para el centrado vertical */
-    height: 100%;
+    padding: var(--spacing-sm) 0;
     display: flex;
     align-items: center;
   }
+  .logo-img { width: 100px; height: auto; }
 
-  /* Controlamos el tamaño del logo con CSS */
-  .logo-img {
-    width: 100px; /* Tamaño del logo en móvil */
-    height: auto;
-  }
+  /* ---------- NAV DESKTOP ---------- */
+  .desktop-navbar { display: none; }
 
-  /* Menú de navegación de escritorio: oculto en móvil */
-  .desktop-navbar {
-    display: none; 
-  }
-
-  /* --- Botón Hamburguesa --- */
+  /* ---------- BOTÓN HAMBURGUESA ---------- */
   .hamburger-button {
     display: block;
     border: none;
     background: transparent;
     padding: var(--spacing-sm);
     cursor: pointer;
-    z-index: 110; /* Por encima del header pero debajo del menú */
+    z-index: 110;
   }
-  .hamburger-button .icon {
-    width: 24px;
-    height: 24px;
-    color: var(--color-text);
-  }
-  .hamburger-button .icon-close {
-    display: none; /* Oculto por defecto */
-  }
+  .hamburger-button .icon { width: 24px; height: 24px; color: var(--color-text); }
+  .hamburger-button .icon-close { display: none; }
 
-  /* Cuando el menú está abierto, muestra la 'X' y oculta la hamburguesa */
-  .header.is-open .hamburger-button .icon-open {
-    display: none;
-  }
-  .header.is-open .hamburger-button .icon-close {
-    display: block;
-  }
+  .header.is-open .hamburger-button .icon-open { display: none; }
+  .header.is-open .hamburger-button .icon-close { display: block; }
 
-  /* --- Menú Móvil Desplegable --- */
+  /* ---------- MENÚ MÓVIL ---------- */
   .mobile-menu {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding-top: 100px; /* Espacio generoso para el header (94px) y un pequeño margen superior. Ajustar si es necesario o vincular a --header-height-mobile con calc() */
+    inset: 0;
+    padding-top: 100px;
     background-color: var(--color-background);
-    z-index: 105; /* Por encima del header */
-
+    z-index: 105;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-lg);
-
-    /* Transición para aparecer y desaparecer */
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
     visibility: hidden;
@@ -105,42 +85,23 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
     transform: translateX(0);
     visibility: visible;
   }
-  .mobile-menu a {
-    font-size: 1.5rem;
-    font-weight: var(--font-weight-bold);
-  }
+  .mobile-menu a { font-size: 1.5rem; font-weight: var(--font-weight-bold); }
 
-
-  /* --- TABLET Y SUPERIOR (usando variable de breakpoint) --- */
+  /* ---------- TABLET Y SUPERIOR ---------- */
   @media (min-width: 768px) {
-    .headerinside {
-      height: 80px;
-      padding: 0 var(--spacing-xl);
-    }
+    .headerinside { height: 80px; }
+    .headerline  { font-size: 1.2rem; }
 
-    .headerline {
-      padding: var(--spacing-xs) var(--spacing-xl);
-      text-align: right; /* El texto se alinea a la derecha en tablet y superior */
-      font-size: 1.2rem;
-    }
+    .logo-img { width: 122px; }
 
-    .logo-img {
-      width: 122px; /* Tamaño del logo en tablet */
-    }
-    .hamburger-button, .mobile-menu {
-      display: none; /* Ocultamos todo lo relacionado con el menú móvil */
-    }
+    .hamburger-button, .mobile-menu { display: none; }
     .desktop-navbar {
-      display: flex; /* Mostramos la navegación de escritorio */
+      display: flex;
       align-items: center;
-      gap: 24px; /* Un poco menos de espacio en tablet */
+      gap: 24px;
     }
-    .nav-link {
-      font-weight: var(--font-weight-bold);
-      padding: var(--spacing-xs);
-      font-size: 1rem;
-    }
-    .nav-button {
+    .nav-link  { font-weight: var(--font-weight-bold); padding: var(--spacing-xs); font-size: 1rem; }
+    .nav-button{
       font-weight: var(--font-weight-bold);
       border-radius: var(--border-radius-medium);
       background-color: var(--color-accent);
@@ -149,60 +110,59 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
     }
   }
 
-  /* --- LAPTOP Y SUPERIOR (usando variable de breakpoint) --- */
+  /* ---------- LAPTOP Y SUPERIOR ---------- */
   @media (min-width: 1024px) {
-    .logo-img {
-      width: 140px; /* Un logo un poco más grande para pantallas grandes */
-    }
-    .desktop-navbar {
-      gap: var(--spacing-lg); /* Espacio original en desktop */
-    }
-     .nav-link {
-      font-size: 1.1rem;
-    }
+    .logo-img    { width: 140px; }
+    .desktop-navbar { gap: var(--spacing-lg); }
+    .nav-link    { font-size: 1.1rem; }
   }
 </style>
 
 <header class="header" id="site-header">
+  <!-- Franja superior -->
   <div class="headerline">
-    <p>cultivo mutuo :)</p>
+    <div class="headerline__content">cultivo mutuo :)</div>
   </div>
 
+  <!-- Contenido principal -->
   <div class="headerinside">
     <a href="/" class="logo-link" aria-label="Página de inicio de Psilocybu">
-      <Image 
-        src={logoAsset} 
+      <Image
+        src={logoAsset}
         alt="Logo de Psilocybu"
         format="webp"
         quality="high"
         class="logo-img"
       />
     </a>
-    
+
+    <!-- Navbar de escritorio -->
     <nav class="desktop-navbar" aria-label="Navegación principal">
       <a href="/autocultivo" class="nav-link">AutoCultivo</a>
-      <a href="/tienda" class="nav-link">Tienda</a>
+      <a href="/tienda"   class="nav-link">Tienda</a>
       <a href="/asistencia" class="nav-link">Asistencia</a>
-      <a href="/blog" class="nav-link">Blog</a>
+      <a href="/blog"     class="nav-link">Blog</a>
       <a href="https://wa.me/xxxxxxxxxx" class="nav-button" target="_blank" rel="noopener noreferrer">Whatsapp</a>
     </nav>
-    
-    <button 
-      class="hamburger-button" 
-      id="hamburger-btn" 
-      aria-label="Abrir menú" 
-      aria-expanded="false" 
+
+    <!-- Botón hamburguesa -->
+    <button
+      class="hamburger-button"
+      id="hamburger-btn"
+      aria-label="Abrir menú"
+      aria-expanded="false"
       aria-controls="mobile-menu"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon icon-open">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-open" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
       </svg>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="icon icon-close">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
       </svg>
     </button>
   </div>
 
+  <!-- Menú móvil -->
   <nav class="mobile-menu" id="mobile-menu" aria-label="Navegación móvil">
     <a href="/autocultivo">AutoCultivo</a>
     <a href="/tienda">Tienda</a>
@@ -213,23 +173,14 @@ import logoAsset from '@/assets/Logo.png'; // Renombrado para evitar confusión
 </header>
 
 <script is:inline>
-  // Script para manejar la apertura y cierre del menú móvil
   const header = document.getElementById('site-header');
   const hamburgerBtn = document.getElementById('hamburger-btn');
-  const mobileMenu = document.getElementById('mobile-menu'); // Necesario para la gestión del foco (futuro)
 
-  if (header && hamburgerBtn && mobileMenu) {
+  if (header && hamburgerBtn) {
     hamburgerBtn.addEventListener('click', () => {
       const isOpen = header.classList.toggle('is-open');
       hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       hamburgerBtn.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
-      
-      // Futura mejora: gestionar el foco aquí
-      // if (isOpen) {
-      //   mobileMenu.querySelector('a').focus(); // Enfocar el primer enlace
-      // } else {
-      //   hamburgerBtn.focus(); // Devolver el foco al botón
-      // }
     });
   }
 </script>
