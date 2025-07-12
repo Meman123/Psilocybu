@@ -9,10 +9,10 @@ interface Video {
 }
 
 const videos: Video[] = [
-  { id: '1072553822', dur: '1:45', title: 'Unboxing y preparación inicial', thumb: 'https://i.vimeocdn.com/video/2001538867-91a68f149692c41e46e2c3bb7e42b427ccaec08cee7b3a0e9b8eac62964f21d1-d_640?region=us' },
-  { id: '1072553822', dur: '1:45', title: 'Unboxing y preparación inicial', thumb: 'https://i.vimeocdn.com/video/2001538867-91a68f149692c41e46e2c3bb7e42b427ccaec08cee7b3a0e9b8eac62964f21d1-d_640?region=us' },
-  { id: '1072553822', dur: '1:45', title: 'Unboxing y preparación inicial', thumb: 'https://i.vimeocdn.com/video/2001538867-91a68f149692c41e46e2c3bb7e42b427ccaec08cee7b3a0e9b8eac62964f21d1-d_640?region=us' },
-  { id: '1072553822', dur: '1:45', title: 'Unboxing y preparación inicial', thumb: 'https://i.vimeocdn.com/video/2001538867-91a68f149692c41e46e2c3bb7e42b427ccaec08cee7b3a0e9b8eac62964f21d1-d_640?region=us' },
+  { id: '1072553822', dur: '1:45', title: 'Unboxing y preparación', thumb: 'https://i.vimeocdn.com/video/2001538867-91a68f149692c41e46e2c3bb7e42b427ccaec08cee7b3a0e9b8eac62964f21d1-d_640?region=us' },
+  { id: 'VIDEO_ID_2', dur: '2:30', title: 'Cuidados y fructificación', thumb: 'https://i.vimeocdn.com/video/2001538867-91a68f149692c41e46e2c3bb7e42b427ccaec08cee7b3a0e9b8eac62964f21d1-d_640?region=us' },
+  { id: 'VIDEO_ID_3', dur: '3:15', title: 'Cosecha y secado', thumb: 'https://i.vimeocdn.com/video/2001538867-91a68f149692c41e46e2c3bb7e42b427ccaec08cee7b3a0e9b8eac62964f21d1-d_640?region=us' },
+  { id: 'VIDEO_ID_4', dur: '1:00', title: 'Solución de problemas', thumb: 'https://i.vimeocdn.com/video/2001538867-91a68f149692c41e46e2c3bb7e42b427ccaec08cee7b3a0e9b8eac62964f21d1-d_640?region=us' },
 ];
 ---
 <style>
@@ -76,32 +76,25 @@ const videos: Video[] = [
 
 /* --- TARJETA DE VIDEO --- */
 .video-card {
-  background: var(--color-background-soft);
-  border: 1px solid var(--color-border-subtle);
+  background: var(--color-background);
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: var(--radius-large);
   overflow: hidden;
   position: relative;
   aspect-ratio: 16 / 9;
   flex-shrink: 0;
   width: clamp(280px, 70vw, 320px);
-  box-shadow: var(--box-shadow-subtle);
-  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease, opacity .3s ease;
+  box-shadow: none;
+  transition: transform .2s ease, box-shadow .2s ease;
   cursor: pointer;
 }
 .video-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 8px 24px -4px hsla(0, 0%, 0%, 0.2);
-  border-color: var(--color-accent);
-}
-.video-card:active {
-  transform: translateY(-2px) scale(0.98);
-  box-shadow: 0 4px 12px -2px hsla(0, 0%, 0%, 0.4);
-  opacity: .9;
+  transform: translateY(-4px);
+  box-shadow: var(--box-shadow-subtle);
 }
 .video-card:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-color: var(--color-accent);
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
 }
 
 .video-card__thumb {
@@ -184,20 +177,6 @@ dialog.video-modal {
 dialog.video-modal::backdrop {
   background: hsla(0,0%,0%,.5);
   backdrop-filter: blur(8px);
-}
-@keyframes fadeInScaleUp {
-  from { opacity: 0; transform-origin: center center; transform: scale(.9); }
-  to   { opacity: 1; transform-origin: center center; transform: scale(1); }
-}
-@keyframes fadeOutScaleDown {
-  from { opacity: 1; transform: scale(1); }
-  to   { opacity: 0; transform: scale(.9); }
-}
-dialog.video-modal[open] {
-  animation: fadeInScaleUp .3s cubic-bezier(.165,.84,.44,1) forwards;
-}
-dialog.video-modal.is-closing {
-  animation: fadeOutScaleDown .3s cubic-bezier(.55,.055,.675,.19) forwards;
 }
 
 .modal-content {
@@ -304,7 +283,7 @@ dialog.video-modal.is-closing {
 
   <dialog class="video-modal" id="videoModal">
     <div class="modal-content">
-      <iframe allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      <iframe allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
     <button class="modal-close" aria-label="Cerrar video">
       <Icon name="mdi:close" width="32" />
@@ -312,51 +291,52 @@ dialog.video-modal.is-closing {
   </dialog>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const modal = document.getElementById('videoModal');
-      if (!modal) return;
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('videoModal') as HTMLDialogElement | null;
+    const iframe = modal?.querySelector('iframe');
+    const closeBtn = modal?.querySelector('.modal-close');
+    const videoCards = document.querySelectorAll('.video-card');
 
-      const iframe = modal.querySelector('iframe');
-      if (!iframe) return;
+    if (!modal || !iframe || !closeBtn) return;
 
-      const closeBtn = modal.querySelector('.modal-close');
-      const videoCards = document.querySelectorAll('.video-card');
+    const vimeoUrl = (id: string) => {
+      const isMobile = window.matchMedia('(pointer:coarse)').matches;
+      const playsinline = isMobile ? 0 : 1;
+      return `https://player.vimeo.com/video/${id}?autoplay=1&responsive=1&playsinline=${playsinline}&controls=1&title=0&byline=0&portrait=0&dnt=1&autopause=0`;
+    };
 
-      const openModal = (btn: HTMLButtonElement) => {
-        const { videoId, videoTitle } = btn.dataset;
-        if (!videoId) return;
+    const openModal = (btn: HTMLButtonElement) => {
+      const { videoId, videoTitle } = btn.dataset;
+      if (!videoId) return;
 
-        const isMobile = window.matchMedia('(pointer:coarse)').matches;
-        const playsinline = isMobile ? 0 : 1;
+      iframe.src = vimeoUrl(videoId);
+      iframe.title = `Video: ${videoTitle || 'Tutorial'}`;
 
-        iframe.src =
-          `https://player.vimeo.com/video/${videoId}` +
-          `?autoplay=1&responsive=1&playsinline=${playsinline}` +
-          `&controls=1&title=0&byline=0&portrait=0&dnt=1&autopause=0`;
-        iframe.title = `Video: ${videoTitle || 'Tutorial'}`;
+      modal.showModal();
+      document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+    };
 
-        if (modal.classList.contains('is-closing')) modal.classList.remove('is-closing');
-        (modal as HTMLDialogElement).showModal();
-      };
+    const closeModal = () => {
+      modal.close();
+    };
 
-      const closeModal = () => {
-        if (modal.classList.contains('is-closing')) return;
-        modal.classList.add('is-closing');
-
-        modal.addEventListener(
-          'animationend',
-          () => {
-            modal.classList.remove('is-closing');
-            (modal as HTMLDialogElement).close();
-            iframe.src = '';
-          },
-          { once: true }
-        );
-      };
-
-      videoCards.forEach(card => card.addEventListener('click', () => openModal(card as HTMLButtonElement)));
-      closeBtn?.addEventListener('click', closeModal);
-      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    videoCards.forEach(card => {
+      card.addEventListener('click', () => openModal(card as HTMLButtonElement));
     });
-  </script>
+
+    closeBtn.addEventListener('click', closeModal);
+
+    // Cierra el modal si se hace clic fuera del contenido
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Evento 'close' del dialog: se dispara al presionar ESC o llamar a .close()
+    modal.addEventListener('close', () => {
+      iframe.src = ''; // Limpia el iframe para detener el video
+      iframe.removeAttribute('src');
+      document.body.style.overflow = ''; // Restaura el scroll
+    });
+  });
+</script>
 </section>
