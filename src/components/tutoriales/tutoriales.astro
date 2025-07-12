@@ -164,7 +164,7 @@ const videos: Video[] = [
 dialog.video-modal {
   border: none;
   padding: 0;
-  background: #000;
+  background: transparent;
   width: 100%;
   height: 100%;
   max-width: 100vw;
@@ -293,27 +293,37 @@ dialog.video-modal::backdrop {
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('videoModal') as HTMLDialogElement | null;
-    const iframe = modal?.querySelector('iframe');
+    const modalContent = modal?.querySelector('.modal-content');
     const closeBtn = modal?.querySelector('.modal-close');
     const videoCards = document.querySelectorAll('.video-card');
 
-    if (!modal || !iframe || !closeBtn) return;
+    if (!modal || !modalContent || !closeBtn) return;
 
-    const vimeoUrl = (id: string) => {
+    const createVimeoIframe = (id: string, title: string) => {
+      const iframe = document.createElement('iframe');
       const isMobile = window.matchMedia('(pointer:coarse)').matches;
       const playsinline = isMobile ? 0 : 1;
-      return `https://player.vimeo.com/video/${id}?autoplay=1&responsive=1&playsinline=${playsinline}&controls=1&title=0&byline=0&portrait=0&dnt=1&autopause=0`;
+      const url = `https://player.vimeo.com/video/${id}?autoplay=1&responsive=1&playsinline=${playsinline}&controls=1&title=0&byline=0&portrait=0&dnt=1&autopause=0`;
+
+      iframe.setAttribute('src', url);
+      iframe.setAttribute('title', `Video: ${title}`);
+      iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('loading', 'lazy');
+      return iframe;
     };
 
     const openModal = (btn: HTMLButtonElement) => {
       const { videoId, videoTitle } = btn.dataset;
-      if (!videoId) return;
+      if (!videoId || !videoTitle) return;
 
-      iframe.src = vimeoUrl(videoId);
-      iframe.title = `Video: ${videoTitle || 'Tutorial'}`;
+      // Limpia el contenido anterior y añade el nuevo iframe
+      modalContent.innerHTML = '';
+      const iframe = createVimeoIframe(videoId, videoTitle);
+      modalContent.appendChild(iframe);
 
       modal.showModal();
-      document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+      document.body.style.overflow = 'hidden';
     };
 
     const closeModal = () => {
@@ -325,17 +335,14 @@ dialog.video-modal::backdrop {
     });
 
     closeBtn.addEventListener('click', closeModal);
-
-    // Cierra el modal si se hace clic fuera del contenido
     modal.addEventListener('click', (e) => {
       if (e.target === modal) closeModal();
     });
 
-    // Evento 'close' del dialog: se dispara al presionar ESC o llamar a .close()
     modal.addEventListener('close', () => {
-      iframe.src = ''; // Limpia el iframe para detener el video
-      iframe.removeAttribute('src');
-      document.body.style.overflow = ''; // Restaura el scroll
+      // Al cerrar, destruye el contenido del modal
+      modalContent.innerHTML = '';
+      document.body.style.overflow = '';
     });
   });
 </script>
