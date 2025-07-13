@@ -1,0 +1,84 @@
+---
+// src/components/Footer.astro
+const year = new Date().getFullYear();
+---
+
+<style>
+/* --- Contenedor Principal del Footer --- */
+.footer {
+  background: transparent; /* Fondo transparente como base */
+  padding-block: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+  position: relative;
+}
+
+/* Línea decorativa superior, mantiene el estilo del sitio */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: -1px; /* Posicionado justo sobre el borde */
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(0, 255, 166, 0.738), var(--color-accent), rgba(255, 187, 0, 0.749));
+  opacity: 0.9;
+}
+
+/* Contenedor del contenido, centrado */
+.footer__container {
+  max-width: var(--site-max-width);
+  margin: 0 auto;
+  padding-inline: var(--side-gutter);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm); /* Espacio limpio entre logo y texto */
+}
+
+/* --- Logo --- */
+/* Estilos eliminados: box-shadow, border-radius.
+   Ahora el logo se muestra tal cual es, sin un contenedor visible. */
+.footer__logo {
+  width: 100px;
+  height: auto; /* Mantiene la proporción */
+  object-fit: contain;
+}
+
+/* --- Texto de Copyright --- */
+.footer__copy {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  opacity: 0.7;
+  text-align: center;
+}
+
+/* --- Ajustes para Móvil --- */
+@media (max-width: 768px) {
+  .footer__logo {
+    width: 48px;
+  }
+  .footer__copy {
+    font-size: 0.8rem;
+  }
+}
+</style>
+
+<footer class="footer">
+  <div class="footer__container">
+    
+    <img
+      src="/src/assets/Logo.png"
+      alt="Psilocybu Logo"
+      loading="lazy"
+      width="120"
+      height="56"
+      class="footer__logo"
+    />
+    
+    <p class="footer__copy">
+      © {year} Psilocybu. Todos los derechos reservados.
+    </p>
+
+  </div>
+</footer>

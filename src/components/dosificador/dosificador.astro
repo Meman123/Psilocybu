@@ -1,0 +1,193 @@
+---
+/* Dosificador Albino Averys — versión “option-cards” final */
+---
+<style>
+/* ===== SECCIÓN PRINCIPAL ===== */
+.dosage{
+  background:var(--color-background-alt);
+  padding-block:var(--spacing-xl);
+}
+.dosage__container{
+  max-width:var(--site-max-width);
+  margin-inline:auto;
+  padding-inline:var(--side-gutter);
+  display:flex;flex-direction:column;gap:var(--spacing-lg);
+}
+.dosage__headline{
+  font:clamp(1.3rem,4vw,3rem)/1.1 var(--font-family-headings,'Quicksand');
+  font-weight:700;text-align:center;
+}
+
+/* ===== FORMULARIO ===== */
+.dosage__form{display:grid;gap:var(--spacing-lg);grid-template-columns:1fr;}
+.field{display:flex;flex-direction:column;gap:var(--spacing-sm);}
+
+/* Peso (input numérico) */
+.input-number{
+  display:flex;align-items:stretch;background:var(--color-background);
+  border:1px solid var(--color-border);border-radius:var(--border-radius-medium);
+  overflow:hidden;
+}
+.input-number__btn{
+  width:48px;background:var(--color-accent);border:none;font-size:1.5rem;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;
+}
+.input-number__btn:hover{background:#fffdb0;}
+.input-number input{
+  flex:1;border:none;text-align:center;font-size:1.15rem;padding-block:var(--spacing-sm);
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+input[type=number]{-moz-appearance:textfield;}
+.input-number input:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px;}
+
+/* ===== OPTION-CARDS ===== */
+.options-grid{
+  display:grid;gap:var(--spacing-md);
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+}
+.option-card{
+  position:relative;user-select:none;cursor:pointer;text-align:center;
+  padding:var(--spacing-md) var(--spacing-sm);
+  border:1.5px solid var(--color-border);border-radius:var(--border-radius-medium);
+  background:var(--color-background);display:flex;flex-direction:column;align-items:center;gap:var(--spacing-xs);
+  transition:border-color .15s,background .15s,transform .15s,box-shadow .15s;
+}
+.option-card__icon{font-size:1.9rem;line-height:1;}
+.option-card__label{font-weight:500;font-size:.95rem;}
+
+/* Ocultamos totalmente el radio */
+.option-card input{
+  position:absolute;inset:0;opacity:0;pointer-events:none;
+}
+
+/* Feedback de selección */
+.option-card:has(input:checked){
+  border-color:var(--color-accent);
+  background:color-mix(in srgb,var(--color-accent) 50%,transparent);
+  box-shadow:0 3px 10px hsl(0 0% 0%/.12);
+  transform:translateY(-2px);
+}
+
+/* ===== RESULTADO ===== */
+.result-output{
+  font-size:1.8rem;font-weight:700;background:var(--color-background);
+  border:1px solid var(--color-border);border-radius:var(--border-radius-medium);
+  padding:var(--spacing-sm) var(--spacing-md);width:100%;text-align: center;
+}
+.note{font-size:.85rem;color:var(--color-border);}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width:768px){
+  
+  .result-output{font-size:2.2rem;}
+}
+</style>
+
+<section class="dosage" id="dosage">
+  <div class="dosage__container">
+    <h2 class="dosage__headline">Dosificador&nbsp;Albino&nbsp;Averys</h2>
+
+    <form class="dosage__form" id="dosageForm" autocomplete="off">
+      <!-- 1 · Peso -->
+      <div class="field">
+        <label for="weightInput"><strong>1 · Tu peso (kg)</strong></label>
+        <div class="input-number">
+          <button type="button" class="input-number__btn" data-action="decrement" aria-label="Disminuir peso">−</button>
+          <input id="weightInput" type="number" min="20" max="200" step="1" value="70" required />
+          <button type="button" class="input-number__btn" data-action="increment" aria-label="Incrementar peso">＋</button>
+        </div>
+      </div>
+
+      <!-- 2 · Estado setas -->
+      <div class="field">
+        <span><strong>2 · Estado de las setas</strong></span>
+        <div class="options-grid">
+          <label class="option-card">
+            <input type="radio" name="state" value="dry" checked />
+            <span class="option-card__icon">🍄</span>
+            <span class="option-card__label">Secas</span>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="state" value="fresh" />
+            <span class="option-card__icon">💧</span>
+            <span class="option-card__label">Frescas</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 3 · Tipo dosis -->
+      <div class="field">
+        <span><strong>3 · Tipo de dosis</strong></span>
+        <div class="options-grid">
+          <label class="option-card">
+            <input type="radio" name="doseType" value="micro" checked />
+            <span class="option-card__icon">🌱</span>
+            <span class="option-card__label">Micro</span>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="doseType" value="baja" />
+            <span class="option-card__icon">🍃</span>
+            <span class="option-card__label">Baja</span>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="doseType" value="media" />
+            <span class="option-card__icon">🍄</span>
+            <span class="option-card__label">Media</span>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="doseType" value="alta" />
+            <span class="option-card__icon">🚀</span>
+            <span class="option-card__label">Alta</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 4 · Resultado -->
+      <div class="field">
+        <label><strong>4 · Dosis recomendada (g)</strong></label>
+        <output id="doseOutput" class="result-output" for="weightInput">0,43</output>
+        <span class="note">* Valor estimado. Ajusta según tu experiencia y tolerancia.</span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ===== JS PURO (lógica intacta, sin botón copiar) ===== -->
+<script is:inline>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('dosageForm');
+  if (!form) return;
+
+  const weightInput = form.querySelector('#weightInput');
+  const doseOutput  = form.querySelector('#doseOutput');
+  const stepBtns    = form.querySelectorAll('.input-number__btn');
+  if (!weightInput || !doseOutput) return;
+
+  const DRY = { micro:0.0061,baja:0.0100,media:0.0150,alta:0.0250 };
+  const FRESH_MULT = 10;
+
+  function calc () {
+    const w = parseFloat(weightInput.value) || 0;
+    const state = form.querySelector('input[name="state"]:checked')?.value;
+    const type  = form.querySelector('input[name="doseType"]:checked')?.value;
+    if (!state || !type) return 0;
+    let g = w * DRY[type];
+    if (state === 'fresh') g *= FRESH_MULT;
+    doseOutput.textContent = g.toFixed(2).replace('.', ',');
+    return g;
+  }
+
+  stepBtns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const delta = btn.dataset.action==='increment'?1:-1;
+      const curr  = parseInt(weightInput.value||'0',10);
+      weightInput.value = String(Math.max(20,Math.min(200,curr+delta)));
+      calc();
+    });
+  });
+
+  form.addEventListener('input', calc);
+  calc();
+});
+</script>
