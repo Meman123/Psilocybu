@@ -41,45 +41,73 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   font:clamp(2rem,4vw,3rem)/1.1 var(--font-family-headings,'Quicksand');
   font-weight:700;
 }
-.headline .highlight{color:var(--color-accent);}
+.headline .highlight{
+  color: #fffc55;
+  text-shadow: 0 2px 2px rgba(0,0,0,0.25), 0 0 4px #222;
+  padding: 2px 4px;
+  font-weight: 800;
+}
 
 .features-list{
   list-style:none;
   padding:0;
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:16px;
   margin-inline:0;
   align-items:flex-start;
 }
 .feature-item{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:12px;
   font-weight:500;
   font-size:1rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: rgba(255, 252, 85, 0.08);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+.feature-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 .feature-item::before{
-  content:"";
+  content:"✓";
   flex-shrink:0;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--color-accent);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #83812c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* — Badge */
 .badge{
   display:inline-block;
-  background:var(--color-accent);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent) 60%, #fffdb0);
   color:#000;
-  font-weight:600;
-  padding:4px 12px;
-  border-radius:8px;
-  font-size:.95rem;
-  box-shadow:0 1px 4px rgb(0 0 0/.12);
+  font-weight:700;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  animation: pulse 2s infinite;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-.badge-shipping{margin-bottom:8px;}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
 
 /* — Imagen */
 .product-img{
@@ -140,7 +168,71 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
     align-items:flex-start;
     display:grid;
     grid-template-columns:1fr 1fr; /* dos columnas de bullets */
-    gap:12px 48px;
+    gap:16px 24px;
+  }
+  .feature-item {
+    font-size: 0.95rem;
+  }
+}
+
+/* Media query específico para tablets */
+@media (min-width:768px) and (max-width:899px){
+  .features__text {
+    text-align: center;
+    align-items: center;
+  }
+  .features-list{
+    display:grid;
+    grid-template-columns:1fr 1fr; /* dos columnas de bullets en tablet */
+    gap:16px 20px;
+    width: 100%;
+    max-width: 600px;
+    
+  }
+  .headline {
+    text-align: center;
+    width: 100%;
+  }
+  .cta-buttons{flex-direction:row; }
+  .feature-item {
+    justify-content: center;
+    text-align: center;
+    padding-left: 40px;
+    padding-right: 40px;
+    position: relative;
+  }
+  .feature-item::before {
+    position: absolute;
+    left: 12px;
+  }
+}
+
+@media (max-width:767px){
+  .features__text {
+    text-align: center;
+    align-items: center;
+  }
+  .headline {
+    text-align: center;
+    width: 100%;
+  }
+  .features-list{
+    display:flex;
+    flex-direction:column; /* una columna de bullets en móvil */
+    width: 100%;
+    margin: 0 auto;
+  }
+  .feature-item {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding-left: 40px;
+    padding-right: 40px;
+    position: relative;
+  }
+  .feature-item::before {
+    position: absolute;
+    left: 12px;
   }
 }
 
