@@ -7,7 +7,7 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
 <style>
 /* — Bloque principal */
 .features{
-  background:var(--color-background);
+  background: white;
   padding-block:var(--spacing-xl);
 }
 
@@ -26,10 +26,10 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   display:flex;
   flex-direction:column;
   gap:var(--spacing-lg);
-  text-align:center;
+  text-align:left;
 }
 .features__product{
-  --product-col-width:400px;
+  --product-col-width:300px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -38,49 +38,76 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
 
 /* — Tipografía y lista */
 .headline{
-  font:clamp(2rem,4vw,3.5rem)/1.1 var(--font-family-headings,'Quicksand');
+  font:clamp(2rem,4vw,3rem)/1.1 var(--font-family-headings,'Quicksand');
   font-weight:700;
-  filter:drop-shadow(-1px 2px .1px hsla(0, 0%, 0%, 0.8));
 }
-.headline .highlight{color:var(--color-accent);}
+.headline .highlight{
+  color: #fffc55;
+  text-shadow: 0 2px 2px rgba(0,0,0,0.25), 0 0 4px #222;
+  padding: 2px 4px;
+  font-weight: 800;
+}
 
 .features-list{
   list-style:none;
   padding:0;
   display:flex;
   flex-direction:column;
-  gap:12px;
-  margin-inline:auto;
-  align-items:center;
+  gap:16px;
+  margin-inline:0;
+  align-items:flex-start;
 }
 .feature-item{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:12px;
   font-weight:500;
-  font-size:1.2rem;
+  font-size:1rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: rgba(255, 252, 85, 0.08);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+.feature-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 .feature-item::before{
-  content:"";
+  content:"✓";
   flex-shrink:0;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--color-accent);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #83812c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* — Badge */
 .badge{
   display:inline-block;
-  background:var(--color-accent);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent) 60%, #fffdb0);
   color:#000;
-  font-weight:600;
-  padding:4px 12px;
-  border-radius:8px;
-  font-size:.95rem;
-  box-shadow:0 1px 4px rgb(0 0 0/.12);
+  font-weight:700;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  animation: pulse 2s infinite;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-.badge-shipping{margin-bottom:8px;}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
 
 /* — Imagen */
 .product-img{
@@ -99,7 +126,7 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   flex-direction:column;
   gap:8px;
   width:100%;
-  max-width:var(--product-col-width);
+  
 }
 .btn{
   flex:1;
@@ -130,17 +157,82 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
 /* — Responsive */
 @media (min-width:900px){
   .features__container{
-    grid-template-columns:1.2fr 1fr;
+    grid-template-columns:1.5fr 1fr;
     align-items:center;
+    gap: var(--spacing-xl);
   }
   .features__text{text-align:left;}
-  .cta-buttons{flex-direction:row;}
+  .cta-buttons{flex-direction:row; }
   .features-list{
     margin-inline:0;
     align-items:flex-start;
     display:grid;
     grid-template-columns:1fr 1fr; /* dos columnas de bullets */
-    gap:12px 48px;
+    gap:16px 24px;
+  }
+  .feature-item {
+    font-size: 0.95rem;
+  }
+}
+
+/* Media query específico para tablets */
+@media (min-width:768px) and (max-width:899px){
+  .features__text {
+    text-align: center;
+    align-items: center;
+  }
+  .features-list{
+    display:grid;
+    grid-template-columns:1fr 1fr; /* dos columnas de bullets en tablet */
+    gap:16px 20px;
+    width: 100%;
+    max-width: 600px;
+    
+  }
+  .headline {
+    text-align: center;
+    width: 100%;
+  }
+  .cta-buttons{flex-direction:row; }
+  .feature-item {
+    justify-content: center;
+    text-align: center;
+    padding-left: 40px;
+    padding-right: 40px;
+    position: relative;
+  }
+  .feature-item::before {
+    position: absolute;
+    left: 12px;
+  }
+}
+
+@media (max-width:767px){
+  .features__text {
+    text-align: center;
+    align-items: center;
+  }
+  .headline {
+    text-align: center;
+    width: 100%;
+  }
+  .features-list{
+    display:flex;
+    flex-direction:column; /* una columna de bullets en móvil */
+    width: 100%;
+    margin: 0 auto;
+  }
+  .feature-item {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding-left: 40px;
+    padding-right: 40px;
+    position: relative;
+  }
+  .feature-item::before {
+    position: absolute;
+    left: 12px;
   }
 }
 
@@ -150,37 +242,41 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
 </style>
 
 <section class="features" id="features">
-  ...
-  <div class="cta-buttons">
-    <a href="#" id="btn-comprar-growkit" class="btn btn-primary">Compra tu GrowKit</a>
-    <a href="#" class="btn btn-secondary">¿Cómo funciona?</a>
-  </div>
-  ...
-  <script is:inline>
-    document.addEventListener("DOMContentLoaded", function() {
-      const btn = document.getElementById('btn-comprar-growkit');
-      if (!btn) return;
-      btn.addEventListener('click', async function(event) {
-        event.preventDefault();
-        btn.textContent = "Redirigiendo...";
-        btn.disabled = true;
-        try {
-          const res = await fetch('https://api.yieldworks.com.co/webhook/preferencia-growkit');
-          const data = await res.json();
-          if (data.init_point) {
-            window.location.href = data.init_point;
-          } else {
-            btn.textContent = "Intenta de nuevo";
-            btn.disabled = false;
-            alert("No se pudo obtener el enlace de pago. Intenta más tarde.");
-          }
-        } catch (error) {
-          btn.textContent = "Intenta de nuevo";
-          btn.disabled = false;
-          alert("Error al conectar con el servidor.");
-        }
-      });
-    });
-  </script>
-</section>
+  <div class="features__container">
+    <div class="features__text">
+      <h2 class="headline">
+        ¡Cosecha tus honguitos en solo <span class="highlight">2&nbsp;semanas!</span>
+      </h2>
+      <ul class="features-list">
+        <li class="feature-item">Incluye 1&nbsp;L de micelio fresco (Albino Averys)</li>
+        <li class="feature-item">Bolsa #bagtek estéril y de alta calidad</li>
+        <li class="feature-item">Setas listas en 2&nbsp;semanas</li>
+        <li class="feature-item">Atomizador, clip e instructivo incluidos</li>
+        <li class="feature-item">Sin experiencia ni equipos sofisticados</li>
+        <li class="feature-item">5&nbsp;min de atención cada 7&nbsp;días</li>
+        <li class="feature-item">Variedad resistente y de rápido crecimiento</li>
+        <li class="feature-item">Envío gratis nacional</li>
+        <li class="feature-item">Soporte experto paso a paso</li>
+      </ul>
+    </div>
 
+    <div class="features__product">
+      <div class="badge badge-shipping">🚚 Envío gratis nacional</div>
+      <div class="product-img">
+        <Image
+          src={growkitImage}
+          alt="Growkit de Psilocybu con hongos Albino Averys"
+          width={400}
+          height={400}
+          sizes="(min-width:900px) 320px, 80vw"
+          format="webp"
+          quality={90}
+        />
+      </div>
+      <div class="cta-buttons">
+        <a href="/growkit" class="btn btn-primary">Compra tu GrowKit</a>
+        <a href="#" class="btn btn-secondary">¿Cómo funciona?</a>
+      </div>
+    </div>
+  </div>
+</section>

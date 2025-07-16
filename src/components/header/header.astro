@@ -145,7 +145,7 @@ import logoAsset from '@/assets/Logo.png';
     <!-- Navbar de escritorio -->
     <nav class="desktop-navbar" aria-label="Navegación principal">
       <a href="/autocultivo" class="nav-link">AutoCultivo</a>
-      <a href="/tienda"   class="nav-link">Tienda</a>
+      <a href="/growkit"   class="nav-link">Tienda</a>
       <a href="/asistencia" class="nav-link">Asistencia</a>
       <a href="/blog"     class="nav-link">Blog</a>
       <a href="https://wa.me/xxxxxxxxxx" class="nav-button" target="_blank" rel="noopener noreferrer">Whatsapp</a>
@@ -171,7 +171,7 @@ import logoAsset from '@/assets/Logo.png';
   <!-- Menú móvil -->
   <nav class="mobile-menu" id="mobile-menu" aria-label="Navegación móvil">
     <a href="/autocultivo">AutoCultivo</a>
-    <a href="/tienda">Tienda</a>
+    <a href="/growkit">Tienda</a>
     <a href="/asistencia">Asistencia</a>
     <a href="/blog">Blog</a>
     <a href="https://wa.me/xxxxxxxxxx" target="_blank" rel="noopener noreferrer">Whatsapp</a>
@@ -191,23 +191,8 @@ import logoAsset from '@/assets/Logo.png';
     });
   }
 
-  // Lógica de la sombra del header al hacer scroll
+  // Añadir sombra fija al header
   if (header) {
-    const scrollObserver = new IntersectionObserver(
-      ([entry]) => {
-        header.classList.toggle('has-shadow', !entry.isIntersecting);
-      },
-      { rootMargin: '0px', threshold: 1 }
-    );
-
-    // Para que funcione, necesitamos un elemento ancla justo después del header.
-    // Lo crearemos con JS para no ensuciar el HTML.
-    const headerAnchor = document.createElement('div');
-    headerAnchor.style.position = 'absolute';
-    headerAnchor.style.top = '0';
-    headerAnchor.style.height = '1px';
-    headerAnchor.style.width = '1px';
-    header.insertAdjacentElement('afterend', headerAnchor);
-    scrollObserver.observe(headerAnchor);
+    header.classList.add('has-shadow');
   }
 </script>
