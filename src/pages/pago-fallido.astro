@@ -1,0 +1,16 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="Psilocybu - Pago Fallido">
+  <main class="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 text-center px-4">
+    <h1 class="text-4xl font-bold text-red-500 mb-4">¡Ups! Algo salió mal</h1>
+    <p class="text-lg text-gray-700 dark:text-gray-300 mb-8">
+      No pudimos procesar tu pago. Por favor, inténtalo de nuevo o ponte en contacto con nuestro equipo de soporte.
+    </p>
+    <div class="flex space-x-4">
+      <a href="/growkit" class="text-blue-500 hover:underline">Reintentar pago</a>
+      <a href="mailto:soporte@psilocibu.com" class="text-blue-500 hover:underline">Contactar a soporte</a>
+    </div>
+  </main>
+</Layout>
