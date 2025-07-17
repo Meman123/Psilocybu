@@ -2,6 +2,8 @@
 // src/components/Features.astro
 import { Image } from 'astro:assets';
 import growkitImage from '@/assets/growkit-psilocybu.png';
+
+const apiUrl = import.meta.env.PUBLIC_STOCK_API_URL;
 ---
 
 <style>
@@ -10,7 +12,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   background: white;
   padding-block:var(--spacing-xl);
 }
-
 /* — Grid */
 .features__container{
   max-width:var(--site-max-width);
@@ -20,7 +21,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   gap:var(--spacing-xl);
   grid-template-columns:1fr;
 }
-
 /* — Columnas */
 .features__text{
   display:flex;
@@ -35,7 +35,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   align-items:center;
   gap:var(--spacing-lg);
 }
-
 /* — Tipografía y lista */
 .headline{
   font:clamp(2rem,4vw,3rem)/1.1 var(--font-family-headings,'Quicksand');
@@ -47,7 +46,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   padding: 2px 4px;
   font-weight: 800;
 }
-
 .features-list{
   list-style:none;
   padding:0;
@@ -88,7 +86,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-
 /* — Badge */
 .badge{
   display:inline-block;
@@ -108,7 +105,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   50% { transform: scale(1.03); }
   100% { transform: scale(1); }
 }
-
 /* — Imagen */
 .product-img{
   width:100%;
@@ -119,14 +115,12 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   width:100%;
   height:auto;
 }
-
 /* — Botones */
 .cta-buttons{
   display:flex;
   flex-direction:column;
   gap:8px;
   width:100%;
-  
 }
 .btn{
   flex:1;
@@ -153,7 +147,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
   background:#fff;
   color:#000;
 }
-
 /* — Responsive */
 @media (min-width:900px){
   .features__container{
@@ -174,7 +167,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
     font-size: 0.95rem;
   }
 }
-
 /* Media query específico para tablets */
 @media (min-width:768px) and (max-width:899px){
   .features__text {
@@ -187,7 +179,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
     gap:16px 20px;
     width: 100%;
     max-width: 600px;
-    
   }
   .headline {
     text-align: center;
@@ -206,7 +197,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
     left: 12px;
   }
 }
-
 @media (max-width:767px){
   .features__text {
     text-align: center;
@@ -235,9 +225,25 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
     left: 12px;
   }
 }
-
 @media (max-width:500px){
   .feature-item{font-size:1.05rem;}
+}
+.stock-counter {
+  margin-top: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #fff8cd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  min-height: 24px;
+  transition: background 0.3s;
+  text-align: center;
+}
+.stock-counter.agotado {
+  background: #ffe5e5;
+  color: #b80000;
 }
 </style>
 
@@ -259,7 +265,6 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
         <li class="feature-item">Soporte experto paso a paso</li>
       </ul>
     </div>
-
     <div class="features__product">
       <div class="badge badge-shipping">🚚 Envío gratis nacional</div>
       <div class="product-img">
@@ -274,9 +279,41 @@ import growkitImage from '@/assets/growkit-psilocybu.png';
         />
       </div>
       <div class="cta-buttons">
-        <a href="/growkit" class="btn btn-primary">Compra tu GrowKit</a>
+        <a href="/growkit" class="btn btn-primary" id="buy-btn">Compra tu GrowKit</a>
         <a href="#" class="btn btn-secondary">¿Cómo funciona?</a>
+      </div>
+      <div class="stock-counter" id="stock-counter">
+        Consultando disponibilidad...
       </div>
     </div>
   </div>
+
+  <script type="module" define:vars={{ apiUrl }}>
+    async function updateStock() {
+      const counter = document.getElementById('stock-counter');
+      const buyBtn = document.getElementById('buy-btn');
+      try {
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        if (data.stock > 0) {
+          counter.textContent = `Disponibles: ${data.stock}`;
+          counter.classList.remove('agotado');
+          buyBtn.removeAttribute('disabled');
+          buyBtn.textContent = "Compra tu GrowKit";
+        } else {
+          counter.textContent = "¡Agotado!";
+          counter.classList.add('agotado');
+          buyBtn.setAttribute('disabled', true);
+          buyBtn.textContent = "Agotado";
+        }
+      } catch (e) {
+        counter.textContent = 'No disponible. Intenta más tarde.';
+        counter.classList.add('agotado');
+        buyBtn.setAttribute('disabled', true);
+        buyBtn.textContent = "Sin stock";
+      }
+    }
+    updateStock();
+  </script>
 </section>
