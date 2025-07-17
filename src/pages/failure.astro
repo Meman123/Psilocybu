@@ -3,49 +3,87 @@ import Layout from '@/layouts/Layout.astro';
 ---
 
 <Layout title="Psilocybu - Pago Fallido">
-  <main>
-    <h1>¡Ups! Algo salió mal</h1>
-    <p>
-      No pudimos procesar tu pago. Por favor, inténtalo de nuevo o ponte en contacto con nuestro equipo de soporte.
-    </p>
-    <div>
-      <a href="/growkit">Reintentar pago</a>
-      <a href="mailto:soporte@psilocibu.com">Contactar a soporte</a>
+  <main class="main-container">
+    <div class="card">
+      <h1 class="title">¡Ups! Algo salió mal</h1>
+      <p class="message">
+        No pudimos procesar tu pago. Por favor, inténtalo de nuevo o ponte en contacto con nuestro equipo de soporte.
+      </p>
+      <div class="button-group">
+        <a href="/growkit" class="button">Reintentar pago</a>
+        <a href="mailto:soporte@psilocibu.com" class="button button-secondary">Contactar a soporte</a>
+      </div>
     </div>
   </main>
 </Layout>
 
 <style>
-  main {
+  .main-container {
+    display: grid;
+    place-items: center;
+    min-height: calc(100vh - var(--header-height-mobile));
+    padding: var(--spacing-lg);
+  }
+
+  @media (min-width: 768px) {
+    .main-container {
+      min-height: calc(100vh - var(--header-height-desktop));
+    }
+  }
+
+  .card {
+    background-color: var(--color-background-alt);
+    border-radius: var(--border-radius-medium);
+    padding: var(--spacing-xl);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: var(--box-shadow-subtle);
+  }
+
+  .title {
+    color: #ef4444; /* Rojo para error */
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .message {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .button-group {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #f3f4f6;
-    text-align: center;
-    padding: 1rem;
+    gap: var(--spacing-md);
   }
-  h1 {
-    font-size: 2.25rem;
-    font-weight: bold;
-    color: #ef4444;
-    margin-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    .button-group {
+      flex-direction: row;
+      justify-content: center;
+    }
   }
-  p {
-    font-size: 1.125rem;
-    color: #374151;
-    margin-bottom: 2rem;
+
+  .button {
+    display: inline-block;
+    background-color: var(--color-accent);
+    color: var(--color-text);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-medium);
+    font-weight: var(--font-weight-semibold);
+    transition: transform 0.2s ease;
   }
-  div {
-    display: flex;
-    gap: 1rem;
+
+  .button:hover {
+    transform: scale(1.05);
   }
-  a {
-    color: #3b82f6;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
+
+  .button-secondary {
+    background-color: transparent;
+    border: var(--border-width-thin) solid var(--color-border);
+    color: var(--color-text);
   }
 </style>
