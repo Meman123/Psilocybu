@@ -1,5 +1,5 @@
 ---
-/* Dosificador Villa de Leyva — versión “option-cards” final */
+/* Dosificador Villa de Leyva — versión “option-cards” final (lógica revisada 2025-07-17) */
 ---
 <style>
 /* ===== SECCIÓN PRINCIPAL ===== */
@@ -79,7 +79,6 @@ input[type=number]{-moz-appearance:textfield;}
 
 /* ===== RESPONSIVE ===== */
 @media (min-width:768px){
-  
   .result-output{font-size:2.2rem;}
 }
 </style>
@@ -146,14 +145,14 @@ input[type=number]{-moz-appearance:textfield;}
       <!-- 4 · Resultado -->
       <div class="field">
         <label><strong>4 · Dosis recomendada (g)</strong></label>
-        <output id="doseOutput" class="result-output" for="weightInput">0,43</output>
+        <output id="doseOutput" class="result-output" for="weightInput">0,20</output>
         <span class="note">* Valor estimado. Ajusta según tu experiencia y tolerancia.</span>
       </div>
     </form>
   </div>
 </section>
 
-<!-- ===== JS PURO (lógica intacta, sin botón copiar) ===== -->
+<!-- ===== JS PURO (lógica revisada) ===== -->
 <script is:inline>
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('dosageForm');
@@ -164,15 +163,41 @@ document.addEventListener('DOMContentLoaded', () => {
   const stepBtns    = form.querySelectorAll('.input-number__btn');
   if (!weightInput || !doseOutput) return;
 
-  const DRY = { micro:0.61,baja:0.0100,media:0.0150,alta:0.0250 };
+  /* 
+    Tabla orientativa para Psilocybe cubensis SECAS.
+    Valores en gramos: límites conservadores basados en guías de reducción de riesgos.
+    base = punto medio; min/max = rango permitido en categoría.
+  */
+  const DOSE_TABLE = {
+    micro:{min:0.10,base:0.20,max:0.30},
+    baja: {min:0.80,base:1.25,max:1.50},
+    media:{min:1.50,base:2.25,max:3.00},
+    alta: {min:3.00,base:4.00,max:5.00},
+  };
+
+  /* Conversión aproximada fresco→seco (~90% agua) */
   const FRESH_MULT = 10;
+
+  /* Ajuste suave por peso (adultos 20–200 kg); ref=70 kg; clamp 0.75–1.25 */
+  function weightFactor(kg){
+    const f = kg / 70;
+    return Math.max(0.75, Math.min(1.25, f));
+  }
+
+  /* Calcula gramos secos recomendados para categoría + peso */
+  function calcDry(doseType, kg){
+    const t = DOSE_TABLE[doseType];
+    if(!t) return 0;
+    const raw = t.base * weightFactor(kg);
+    return Math.min(t.max, Math.max(t.min, raw));
+  }
 
   function calc () {
     const w = parseFloat(weightInput.value) || 0;
     const state = form.querySelector('input[name="state"]:checked')?.value;
     const type  = form.querySelector('input[name="doseType"]:checked')?.value;
     if (!state || !type) return 0;
-    let g = w * DRY[type];
+    let g = calcDry(type, w);
     if (state === 'fresh') g *= FRESH_MULT;
     doseOutput.textContent = g.toFixed(2).replace('.', ',');
     return g;
@@ -182,7 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click',()=>{
       const delta = btn.dataset.action==='increment'?1:-1;
       const curr  = parseInt(weightInput.value||'0',10);
-      weightInput.value = String(Math.max(20,Math.min(200,curr+delta)));
+      const next  = Math.max(20,Math.min(200,curr+delta));
+      weightInput.value = String(next);
       calc();
     });
   });
