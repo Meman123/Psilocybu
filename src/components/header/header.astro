@@ -106,14 +106,34 @@ import logoAsset from '@/assets/Logo.png';
       align-items: center;
       gap: 24px;
     }
-    .nav-link  { font-weight: var(--font-weight-bold); padding: var(--spacing-xs); font-size: 1rem; }
-    .nav-button{
-      font-weight: var(--font-weight-bold);
-      border-radius: var(--border-radius-medium);
-      background-color: var(--color-accent);
-      border: var(--border-width-thin) solid var(--color-border);
-      padding: 10px 16px;
-    }
+    .nav-link {
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-xs);
+  font-size: 1rem;
+  transition: color 0.15s ease; /* <-- Añade esta línea */
+}
+
+/* AÑADE esta nueva regla justo debajo */
+.nav-link:hover {
+  color: var(--color-accent);
+}
+/* --- CÓDIGO MODIFICADO Y AÑADIDO --- */
+
+/* MODIFICA esta regla añadiendo "transition" */
+.nav-button {
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--border-radius-medium);
+  background-color: var(--color-accent);
+  border: var(--border-width-thin) solid var(--color-border);
+  padding: 10px 16px;
+  transition: transform 0.2s ease, filter 0.2s ease; /* <-- Añade esta línea */
+}
+
+/* AÑADE esta nueva regla justo debajo */
+.nav-button:hover {
+  transform: translateY(-2px); /* Eleva el botón sutilmente */
+  filter: brightness(1.1);    /* Aumenta ligeramente el brillo del color */
+}
   }
 
   /* ---------- LAPTOP Y SUPERIOR ---------- */
