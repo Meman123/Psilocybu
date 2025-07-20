@@ -7,6 +7,41 @@ import Checkout from '@/components/checkout/checkout.astro';
  
 ---
 
-<Layout title="Psilocybu - Inicio">
+<Layout
+  title="Comprar Grow Kit Psilocybu - Envío Gratis Colombia"
+  description="Adquiere tu Grow Kit de Psilocybe cubensis (Villa de Leyva). Incluye todo lo necesario para tu cultivo. Pago seguro y envío rápido."
+>
+  <script type="application/ld+json" slot="head">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "Psilocybu Grow Kit Premium",
+      "image": "URL_A_LA_IMAGEN_PRINCIPAL_DEL_PRODUCTO",
+      "description": "Grow kit completo para el cultivo de hongos Psilocybe cubensis variedad Villa de Leyva. Incluye micelio, bolsa de fructificación y todo lo necesario.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Psilocybu"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://www.psilocybu.com/growkit",
+        "priceCurrency": "COP",
+        "price": "70000",
+        "availability": "https://schema.org/InStock",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "CO"
+          },
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "currency": "COP",
+            "value": "0"
+          }
+        }
+      }
+    }
+  </script>
   <Checkout />
 </Layout>

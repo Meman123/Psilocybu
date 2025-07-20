@@ -28,9 +28,21 @@ import posterImage from '@/assets/hero-poster.webp'; // Asegúrate de que la rut
     /* Asegura que el video cubra todo el espacio sin deformarse */
     object-fit: contain;
   }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 </style>
 
 <div class="video-container">
+  <h1 class="visually-hidden">Grow Kits de Hongos Psilocybe en Colombia</h1>
   <video
     class="video-background"
     autoplay
