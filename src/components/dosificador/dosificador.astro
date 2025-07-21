@@ -18,6 +18,42 @@
   font-weight:700;text-align:center;
 }
 
+/* 🔥 SEO >> Estilos para el nuevo contenido de texto */
+.dosage__intro {
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 65ch; /* Limita el ancho de línea para mejor legibilidad */
+    margin-inline: auto; /* Centra el bloque de texto */
+    color: var(--color-text-secondary, #4a5568);
+}
+.dosage__info {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-medium);
+}
+.dosage__info h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-sm);
+}
+.dosage__info p, .dosage__info ul {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary, #4a5568);
+}
+.dosage__info ul {
+    list-style-position: inside;
+    padding-left: var(--spacing-xs);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+/* ===== FIN DE ESTILOS SEO ===== */
+
+
 /* ===== FORMULARIO ===== */
 .dosage__form{display:grid;gap:var(--spacing-lg);grid-template-columns:1fr;}
 .field{display:flex;flex-direction:column;gap:var(--spacing-sm);}
@@ -85,10 +121,14 @@ input[type=number]{-moz-appearance:textfield;}
 
 <section class="dosage" id="dosage">
   <div class="dosage__container">
-    <h2 class="dosage__headline">Dosificador&nbsp;Villa&nbsp;de&nbsp;Leyva</h2>
+
+    <h2 class="dosage__headline">Calculadora de Dosis de Hongos</h2>
+
+    <p class="dosage__intro">
+        Encuentra la dosis recomendada para tu experiencia. Ingresa tu peso, el estado de los hongos y la intensidad que buscas para obtener una guía precisa. Nuestra herramienta está diseñada para promover un uso seguro y consciente.
+    </p>
 
     <form class="dosage__form" id="dosageForm" autocomplete="off">
-      <!-- 1 · Peso -->
       <div class="field">
         <label for="weightInput"><strong>1 · Tu peso (kg)</strong></label>
         <div class="input-number">
@@ -98,9 +138,8 @@ input[type=number]{-moz-appearance:textfield;}
         </div>
       </div>
 
-      <!-- 2 · Estado setas -->
       <div class="field">
-        <span><strong>2 · Estado de las setas</strong></span>
+        <span><strong>2 · Elige el estado de los hongos</strong></span>
         <div class="options-grid">
           <label class="option-card">
             <input type="radio" name="state" value="dry" checked />
@@ -115,9 +154,8 @@ input[type=number]{-moz-appearance:textfield;}
         </div>
       </div>
 
-      <!-- 3 · Tipo dosis -->
       <div class="field">
-        <span><strong>3 · Tipo de dosis</strong></span>
+        <span><strong>3 · Selecciona la intensidad deseada</strong></span>
         <div class="options-grid">
           <label class="option-card">
             <input type="radio" name="doseType" value="micro" checked />
@@ -142,18 +180,28 @@ input[type=number]{-moz-appearance:textfield;}
         </div>
       </div>
 
-      <!-- 4 · Resultado -->
       <div class="field">
-        <label><strong>4 · Dosis recomendada (g)</strong></label>
+        <label><strong>4 · Dosis recomendada (gramos)</strong></label>
         <output id="doseOutput" class="result-output" for="weightInput">0,20</output>
-        <span class="note">* Valor estimado. Ajusta según tu experiencia y tolerancia.</span>
+        <span class="note">* Los valores son una guía estimada. La potencia puede variar. Comienza siempre con una dosis baja.</span>
       </div>
     </form>
+
+    <div class="dosage__info">
+        <h3>Consideraciones Importantes</h3>
+        <p>Esta calculadora de dosis ofrece una estimación basada en promedios. Recuerda que la experiencia psicodélica es profundamente personal y es influenciada por múltiples factores:</p>
+        <ul>
+            <li><strong>Tolerancia Individual:</strong> Tu metabolismo y experiencia previa juegan un papel crucial. Si eres nuevo, siempre es mejor empezar con una dosis baja.</li>
+            <li><strong>Set y Setting:</strong> Tu estado mental (Set) y el entorno físico/social (Setting) son tan importantes como la dosis. Asegúrate de estar en un lugar cómodo, seguro y con una mentalidad positiva.</li>
+            <li><strong>Descargo de Responsabilidad:</strong> Esta herramienta es para fines informativos y de reducción de riesgos. No constituye una recomendación médica. El uso de estas sustancias debe ser un acto consciente y responsable, siempre respetando el marco legal de tu localidad.</li>
+        </ul>
+    </div>
+
   </div>
 </section>
 
-<!-- ===== JS PURO (lógica revisada) ===== -->
 <script is:inline>
+// NINGÚN CAMBIO AQUÍ. LA LÓGICA PERMANECE 100% INTACTA.
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('dosageForm');
   if (!form) return;
@@ -163,11 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const stepBtns    = form.querySelectorAll('.input-number__btn');
   if (!weightInput || !doseOutput) return;
 
-  /* 
-    Tabla orientativa para Psilocybe cubensis SECAS.
-    Valores en gramos: límites conservadores basados en guías de reducción de riesgos.
-    base = punto medio; min/max = rango permitido en categoría.
-  */
   const DOSE_TABLE = {
     micro:{min:0.10,base:0.20,max:0.30},
     baja: {min:0.80,base:1.25,max:1.50},
@@ -175,16 +218,13 @@ document.addEventListener('DOMContentLoaded', () => {
     alta: {min:3.00,base:4.00,max:5.00},
   };
 
-  /* Conversión aproximada fresco→seco (~90% agua) */
   const FRESH_MULT = 10;
 
-  /* Ajuste suave por peso (adultos 20–200 kg); ref=70 kg; clamp 0.75–1.25 */
   function weightFactor(kg){
     const f = kg / 70;
     return Math.max(0.75, Math.min(1.25, f));
   }
 
-  /* Calcula gramos secos recomendados para categoría + peso */
   function calcDry(doseType, kg){
     const t = DOSE_TABLE[doseType];
     if(!t) return 0;

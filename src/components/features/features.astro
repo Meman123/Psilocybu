@@ -11,7 +11,6 @@ const apiUrl = import.meta.env.PUBLIC_STOCK_API_URL;
 .features{
   background: white;
   padding-block:var(--spacing-xl);
-  
 }
 /* — Grid */
 .features__container{
@@ -50,34 +49,49 @@ const apiUrl = import.meta.env.PUBLIC_STOCK_API_URL;
 .features-list{
   list-style:none;
   padding:0;
-  display:flex;
-  flex-direction:column;
+  display:grid; /* Cambiado a grid para mejor control */
+  grid-template-columns: 1fr; /* Una columna por defecto */
   gap:16px;
   margin-inline:0;
-  align-items:flex-start;
 }
+/* 🔥 NUEVO DISEÑO DEL ITEM - MÁS LIMPIO Y ESTRUCTURADO */
 .feature-item{
   display:flex;
-  align-items:center;
-  gap:12px;
-  font-weight:500;
-  font-size:1rem;
-  padding: 8px 12px;
-  border-radius: 8px;
+  align-items: flex-start; /* Alinea el check al inicio del bloque */
+  gap: 14px;
   background-color: rgba(255, 252, 85, 0.08);
+  padding: 16px; /* Más padding para que respire */
+  border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 100%;
 }
 .feature-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
+.feature-item__content {
+  display: flex;
+  flex-direction: column; /* Apila el título y la descripción */
+}
+.feature-item strong {
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: #333;
+}
+.feature-item span {
+  font-weight: 400;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #555;
+  margin-top: 4px; /* Pequeño espacio entre título y descripción */
+}
 .feature-item::before{
   content:"✓";
   flex-shrink:0;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  margin-top: 2px; /* Alineación vertical fina */
   border-radius: 50%;
   background: var(--color-accent);
   color: #83812c;
@@ -87,6 +101,7 @@ const apiUrl = import.meta.env.PUBLIC_STOCK_API_URL;
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
+
 /* — Badge */
 .badge{
   display:inline-block;
@@ -148,6 +163,7 @@ const apiUrl = import.meta.env.PUBLIC_STOCK_API_URL;
   background:#fff;
   color:#000;
 }
+
 /* — Responsive */
 @media (min-width:900px){
   .features__container{
@@ -158,14 +174,8 @@ const apiUrl = import.meta.env.PUBLIC_STOCK_API_URL;
   .features__text{text-align:left;}
   .cta-buttons{flex-direction:row; }
   .features-list{
-    margin-inline:0;
-    align-items:flex-start;
-    display:grid;
-    grid-template-columns:1fr 1fr; /* dos columnas de bullets */
-    gap:16px 24px;
-  }
-  .feature-item {
-    font-size: 0.95rem;
+    grid-template-columns:1fr 1fr; /* Mantiene las dos columnas */
+    gap: 16px 24px;
   }
 }
 /* Media query específico para tablets */
@@ -175,27 +185,18 @@ const apiUrl = import.meta.env.PUBLIC_STOCK_API_URL;
     align-items: center;
   }
   .features-list{
-    display:grid;
-    grid-template-columns:1fr 1fr; /* dos columnas de bullets en tablet */
+    grid-template-columns:1fr 1fr; /* Dos columnas también en tablet */
     gap:16px 20px;
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
   }
-  .headline {
+  .headline, .cta-buttons {
     text-align: center;
     width: 100%;
   }
-  .cta-buttons{flex-direction:row; }
-  .feature-item {
-    justify-content: center;
-    text-align: center;
-    padding-left: 40px;
-    padding-right: 40px;
-    position: relative;
-  }
-  .feature-item::before {
-    position: absolute;
-    left: 12px;
+  .cta-buttons{
+      flex-direction:row;
+      justify-content: center;
   }
 }
 @media (max-width:767px){
@@ -208,27 +209,13 @@ const apiUrl = import.meta.env.PUBLIC_STOCK_API_URL;
     width: 100%;
   }
   .features-list{
-    display:flex;
-    flex-direction:column; /* una columna de bullets en móvil */
+    grid-template-columns:1fr; /* Una columna en móvil */
     width: 100%;
+    max-width: 400px; /* Ancho máximo para que no se estire demasiado */
     margin: 0 auto;
   }
-  .feature-item {
-    width: 100%;
-    justify-content: center;
-    text-align: center;
-    padding-left: 40px;
-    padding-right: 40px;
-    position: relative;
-  }
-  .feature-item::before {
-    position: absolute;
-    left: 12px;
-  }
 }
-@media (max-width:500px){
-  .feature-item{font-size:1.05rem;}
-}
+
 .stock-counter {
   margin-top: 4px;
   font-size: 1rem;
@@ -254,17 +241,59 @@ const apiUrl = import.meta.env.PUBLIC_STOCK_API_URL;
       <h2 class="headline">
         ¡Cosecha tus honguitos en solo <span class="highlight">2&nbsp;semanas!</span>
       </h2>
+      
       <ul class="features-list">
-        <li class="feature-item"><strong>Micelio Fresco de Calidad:</strong> Recibe 1 litro de micelio de la variedad Villa de Leyva, conocida por su resistencia y rápido crecimiento, ideal para iniciar tu cultivo de hongos en casa.</li>
-        <li class="feature-item"><strong>Bolsa de Cultivo Profesional:</strong> Nuestro kit de cultivo incluye una bolsa #bagtek estéril de alta calidad que crea el ambiente perfecto para la fructificación de tus hongos.</li>
-        <li class="feature-item"><strong>Cosecha Rápida en Colombia:</strong> ¡Observa los primeros resultados en solo 2 semanas! Nuestro kit está optimizado para que obtengas tu cosecha de hongos frescos rápidamente.</li>
-        <li class="feature-item"><strong>Todo Incluido para Empezar:</strong> El kit viene con atomizador, clip de cierre e instructivo detallado. Todo lo que necesitas para tu cultivo de hongos en Colombia.</li>
-        <li class="feature-item"><strong>Ideal para Principiantes:</strong> No necesitas experiencia previa ni equipos sofisticados. Es el kit de cultivo de hongos perfecto para dar tus primeros pasos en la micología desde casa.</li>
-        <li class="feature-item"><strong>Bajo Mantenimiento:</strong> Dedica solo 5 minutos de atención cada 7 días. Nuestro método simplifica el proceso para que disfrutes del cultivo sin complicaciones.</li>
-        <li class="feature-item"><strong>Soporte en Colombia:</strong> Ofrecemos soporte experto y personalizado para resolver todas tus dudas durante el proceso de cultivo de tu kit.</li>
-        <li class="feature-item"><strong>Envío Gratis a toda Colombia:</strong> Recibe tu kit de cultivo de hongos en cualquier lugar de Colombia sin costo adicional. ¡Tu aventura micológica empieza aquí!</li>
+        <li class="feature-item">
+          <div class="feature-item__content">
+            <strong>Micelio de Calidad Superior</strong>
+            <span>1L de potente micelio Villa de Leyva para un crecimiento veloz.</span>
+          </div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-item__content">
+            <strong>Bolsa de Cultivo Profesional</strong>
+            <span>Bolsa #bagtek estéril para una fructificación perfecta y segura.</span>
+          </div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-item__content">
+            <strong>Cosecha en Tiempo Récord</strong>
+            <span>Observa los primeros hongos en solo 2 semanas. Optimizado para Colombia.</span>
+          </div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-item__content">
+            <strong>Kit Todo en Uno</strong>
+            <span>Incluye atomizador, clip e instructivo. ¡Todo listo para empezar!</span>
+          </div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-item__content">
+            <strong>Ideal para Principiantes</strong>
+            <span>Cero experiencia requerida. Nuestra guía fácil hace todo el trabajo.</span>
+          </div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-item__content">
+            <strong>Mínimo Esfuerzo</strong>
+            <span>Solo 5 minutos de atención por semana. Un cultivo sin complicaciones.</span>
+          </div>
+        </li>
+         <li class="feature-item">
+          <div class="feature-item__content">
+            <strong>Soporte en Colombia</strong>
+            <span>Acompañamiento experto y local para resolver todas tus dudas.</span>
+          </div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-item__content">
+            <strong>Envío Gratis y Discreto</strong>
+            <span>Entregamos en toda Colombia sin costo y protegiendo tu privacidad.</span>
+          </div>
+        </li>
       </ul>
     </div>
+
     <div class="features__product">
       <div class="badge badge-shipping">🚚 Envío gratis nacional</div>
       <div class="product-img">

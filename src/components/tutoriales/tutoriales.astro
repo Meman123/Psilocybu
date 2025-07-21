@@ -1,99 +1,158 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-// 1. Estructura de datos simplificada.
 interface Video {
   id: string;
-  dur: string;
   title: string;
-  thumbUrl: string; // Simplemente la URL de la imagen.
+  thumbUrl: string;
+  description: string;
 }
 
-// 2. Array de videos con la ruta directa a las imágenes en la carpeta `public`.
 const videos: Video[] = [
-  // Por ahora, todos usan la misma imagen. ¡Cuando tengas más, solo cambia el nombre del archivo!
-  { id: '1072553822', dur: '1:45', title: 'Unboxing y preparación',    thumbUrl: '/thumbnails/thumb.png' },
-  { id: '949386936',  dur: '2:30', title: 'Cuidados y fructificación', thumbUrl: '/thumbnails/thumb2.jpg' },
-  { id: '1038436204',  dur: '3:15', title: 'Cosecha y secado',          thumbUrl: '/thumbnails/thumb3.jpg' },
-  { id: '961276412',  dur: '1:00', title: 'Solución de problemas',      thumbUrl: '/thumbnails/thumb.png' },
+  { id: '1072553822', title: 'Unboxing y Preparación del Kit', thumbUrl: '/thumbnails/thumb.png', description: 'Aprende a desempacar y preparar tu GrowKit Psilocybu correctamente para asegurar un inicio de cultivo exitoso en Colombia.' },
+  { id: '949386936', title: 'Cuidados y Fructificación', thumbUrl: '/thumbnails/thumb2.jpg', description: 'Guía paso a paso sobre las condiciones de luz, humedad y temperatura para la etapa de fructificación de tus hongos.' },
+  { id: '1038436204', title: 'Cosecha y Secado Correcto', thumbUrl: '/thumbnails/thumb3.jpg', description: 'Te enseñamos el momento exacto para cosechar tus hongos y las mejores técnicas para un secado y almacenamiento óptimos.' },
+  { id: '961276412', title: 'Solución de Problemas Comunes', thumbUrl: '/thumbnails/thumb.png', description: '¿Contaminación? ¿Crecimiento lento? Identifica y soluciona los problemas más comunes en el cultivo de hongos.' },
 ];
 ---
 
+<script type="application/ld+json" set:html={JSON.stringify(
+  videos.map(video => ({
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": video.title,
+    "description": video.description,
+    "thumbnailUrl": `${Astro.url.origin}${video.thumbUrl}`,
+    "uploadDate": "2025-07-21T12:00:00-05:00",
+    "duration": "PT2M",
+    "contentUrl": `https://vimeo.com/${video.id}`,
+    "embedUrl": `https://player.vimeo.com/video/${video.id}`,
+    "publisher": {
+      "@type": "Organization",
+      "name": "Psilocybu",
+      "logo": { "@type": "ImageObject", "url": `${Astro.url.origin}/Logo.png` }
+    }
+  }))
+)} />
+
 <style>
-/* Todos los estilos se mantienen igual que en la versión anterior */
-:root {
-  --color-background-soft: hsla(59 100% 67% / .4);
-  --radius-large: 16px;
-}
-.tutorials { background: var(--color-background-soft); padding-block: var(--spacing-xl); overflow: hidden; }
+/* Estilos generales (sin cambios) */
+.tutorials { background: hsla(59 100% 67% / .4); padding-block: var(--spacing-xl); }
 .tutorials__container { max-width: var(--site-max-width); margin: auto; padding-inline: var(--side-gutter); display: flex; flex-direction: column; gap: var(--spacing-lg); text-align: center; }
-.tutorials__headline { font: clamp(2.3rem, 4.5vw, 3.5rem) / 1.1 var(--font-family-base); font-weight: var(--font-weight-bold); }
-.tutorials__sub { font-size: 1.2rem; max-width: 80ch; margin: auto; font-weight: 500; }
+.tutorials__headline { font: clamp(2.3rem, 4.5vw, 3.5rem)/1.1 var(--font-family-headings, 'Quicksand'); font-weight: 700; }
+.tutorials__sub { font-size: 1.2rem; max-width: 65ch; margin: auto; font-weight: 500; color: #333; }
 .tutorials__alert { background: var(--color-accent); color: #000; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius-medium); font-weight: var(--font-weight-semibold); }
 .tutorials__alert a { text-decoration: underline; color: inherit; }
-.tutorials__scroll-container { display: flex; overflow-x: auto; gap: var(--spacing-md); padding-block: var(--spacing-lg); margin-inline: calc(-1 * var(--side-gutter)); padding-inline: var(--side-gutter); scrollbar-width: none; }
-.tutorials__scroll-container::-webkit-scrollbar { display: none; }
-.video-card { flex-shrink: 0; width: clamp(280px, 70vw, 320px); aspect-ratio: 16 / 9; border-radius: var(--radius-large); overflow: hidden; position: relative; background: var(--color-background); border: 1px solid hsl(0 0% 0% / 0.1); box-shadow: 0 2px 6px hsl(0 0% 0% / 0.08); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
-.video-card:hover { transform: translateY(-4px); box-shadow: 0 6px 18px hsl(0 0% 0% / 0.15); }
-.video-card__thumb { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-.video-card:hover .video-card__thumb { transform: scale(1.1); }
-.video-card__overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-.video-card__play-icon { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: hsla(0, 0%, 100%, 0.2); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border: 1px solid hsla(0, 0%, 100%, 0.3); color: #fff; font-size: 2rem; transition: background 0.3s, transform 0.3s; }
-.video-card:hover .video-card__play-icon { background: hsla(0, 0%, 100%, 0.4); transform: scale(1.1); }
 .tutorials__cta { align-self: center; padding: 12px 32px; border-radius: 99px; font-weight: var(--font-weight-bold); background: var(--color-accent); color: #000; border: none; display: inline-flex; gap: 8px; box-shadow: 0 4px 8px hsl(0 0% 0% / 0.12); transition: transform 0.25s, box-shadow 0.25s; text-decoration: none; }
 .tutorials__cta:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 6px 14px hsl(0 0% 0% / 0.18); }
-.video-card, .tutorials__cta, .modal-close { touch-action: manipulation; }
-dialog.video-modal { border: none; padding: 0; background: transparent; max-width: 100vw; }
-dialog.video-modal::backdrop { background: hsl(0 0% 0% / 0); backdrop-filter: blur(8px); transition: background-color 0.3s ease; }
-dialog.video-modal[open]::backdrop { background-color: hsl(0 0% 0% / 0.55); }
-dialog.video-modal[open] { position: fixed; inset: 0; margin: 0; z-index: 1000; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-.modal-content { width: min(90vw, 1600px); aspect-ratio: 16 / 9; max-height: 90vh; display: flex; line-height: 0; transform: scale(0.95); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease; }
-dialog.video-modal[open] .modal-content { transform: scale(1); opacity: 1; }
-.modal-content iframe { margin: 0; padding: 0; border: none !important; outline: none !important; box-shadow: none !important; background: none !important; }
-.modal-close { position: absolute; top: 24px; right: 24px; width: 48px; height: 48px; border: none; border-radius: 50%; background: hsl(0 0% 0% / 0.6); color: #fff; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); transition: transform 0.3s, background 0.3s; cursor: pointer; }
-.modal-close:hover { background: var(--color-accent); color: #000; transform: rotate(90deg) scale(1.08); }
-.modal-close:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
-@media (min-width: 768px) { .tutorials__scroll-container { display: grid; grid-template-columns: repeat(2, 1fr); margin-inline: 0; padding-inline: 0; } }
-@media (min-width: 1024px) { .tutorials__scroll-container { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 1400px) { .tutorials__scroll-container { grid-template-columns: repeat(4, 1fr); } }
+
+/* Grid de videos */
+.tutorials__grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  padding-block: var(--spacing-lg);
+}
+.video-card {
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  border: 1.5px solid transparent;
+  box-shadow: 0 2px 6px hsl(0 0% 0% / 0.08);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  background-color: #000;
+}
+.video-card:focus-visible {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-background), 0 0 0 6px var(--color-accent);
+}
+.video-card__player,
+.video-card__thumbnail-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+.video-card__thumbnail-container {
+  cursor: pointer;
+  display: block;
+  border: none;
+  padding: 0;
+}
+.video-card__thumbnail-container:hover .video-card__play-icon {
+  background: hsla(0, 0%, 100%, 0.35);
+}
+.video-card__thumb { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.video-card__thumbnail-container:hover .video-card__thumb {
+  transform: scale(1.05);
+}
+.video-card__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem;
+  background: linear-gradient(to top, hsla(0, 0%, 0%, 0.8), hsla(0, 0%, 0%, 0) 50%);
+  text-align: left;
+}
+.video-card__play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px; height: 56px; border-radius: 50%;
+  background: hsla(0, 0%, 100%, 0.2);
+  backdrop-filter: blur(4px);
+  border: 1px solid hsla(0, 0%, 100%, 0.3);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  transition: background 0.3s;
+}
+.video-card__title { font-size: 1.1rem; font-weight: 600; color: #fff; text-shadow: 0 1px 3px hsl(0 0% 0% / 0.7); }
+
+/* Iframe del video */
+.video-card__player iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
 </style>
 
 <section class="tutorials" id="tutorials">
   <div class="tutorials__container">
-    <h2 class="tutorials__headline">Aprende paso a paso</h2>
+    <h2 class="tutorials__headline">Guía Visual de Cultivo</h2>
     <p class="tutorials__sub">
-      PSILOCYBU GrowKit® contiene 1 L de micelio Villa de Leyva listo para fructificar. Es muy sensible a la
-      contaminación; sigue cada paso del video para evitar pérdidas y conoce nuestra política de garantía.
+      Preparamos esta guía en video para tu GrowKit. Sigue cada paso para maximizar tu cosecha y asegurar una experiencia de cultivo exitosa.
     </p>
 
     <div class="tutorials__alert">
-      Lee las instrucciones antes de abrir tu kit · <a href="/garantia">Revisa nuestra política de garantía</a>
+      Mira las instrucciones antes de abrir tu kit · <a href="/garantia">Revisa nuestra política de garantía</a>
     </div>
 
-    <div class="tutorials__scroll-container">
+    <div class="tutorials__grid-container" id="video-grid">
       {
         videos.map((video) => (
-          <button
-            class="video-card"
-            data-video-id={video.id}
-            data-video-title={video.title}
-            aria-label={`Reproducir video: ${video.title}`}
-          >
-            <img
-              class="video-card__thumb"
-              src={video.thumbUrl}
-              alt={`Miniatura para el video: ${video.title}`}
-              loading="lazy"
-              width="320"
-              height="180"
-            />
-
-            <div class="video-card__overlay" aria-hidden="true">
-              <div class="video-card__play-icon">
-                <Icon name="mdi:play" />
+          <div class="video-card" data-video-id={video.id} data-video-title={video.title}>
+            <button
+              class="video-card__thumbnail-container"
+              aria-label={`Reproducir video: ${video.title}`}
+            >
+              <img
+                class="video-card__thumb"
+                src={video.thumbUrl}
+                alt={`Miniatura del video: ${video.title}`}
+                loading="lazy"
+                width="320" height="180"
+              />
+              <div class="video-card__overlay">
+                <div class="video-card__play-icon"><Icon name="mdi:play" /></div>
+                <h3 class="video-card__title">{video.title}</h3>
               </div>
-            </div>
-          </button>
+            </button>
+          </div>
         ))
       }
     </div>
@@ -102,59 +161,90 @@ dialog.video-modal[open] .modal-content { transform: scale(1); opacity: 1; }
       Ver más tutoriales <Icon name="mdi:arrow-right" width="20" />
     </a>
   </div>
-
-  <dialog class="video-modal" id="videoModal">
-    <div class="modal-content"></div>
-    <button class="modal-close" aria-label="Cerrar video">
-      <Icon name="mdi:close" width="28" />
-    </button>
-  </dialog>
-
-  <script>
-    // El script del modal no necesita ningún cambio.
-    function setupVideoModal() {
-      const modal = document.getElementById('videoModal') as HTMLDialogElement;
-      const modalContent = modal.querySelector('.modal-content');
-      const closeBtn = modal.querySelector('.modal-close');
-      const videoContainer = document.querySelector('.tutorials__scroll-container');
-      if (!modal || !modalContent || !closeBtn || !videoContainer) {
-        console.error('No se encontraron los elementos necesarios para el modal de video.');
-        return;
-      }
-      const createVimeoIframe = (id: string, title: string) => {
-        const iframe = document.createElement('iframe');
-        const vimeoParams = `?autoplay=1&responsive=1&playsinline=1&controls=1&title=0&byline=0&portrait=0&dnt=1&autopause=0`;
-        iframe.src = `https://player.vimeo.com/video/${id}${vimeoParams}`;
-        iframe.title = `Video: ${title}`;
-        iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-        iframe.setAttribute('allowfullscreen', '');
-        iframe.width = '100%';
-        iframe.height = '100%';
-        iframe.loading = 'lazy';
-        return iframe;
-      };
-      videoContainer.addEventListener('click', (event) => {
-        const target = event.target as HTMLElement | null;
-        if (!target) return;
-        const videoCard = target.closest('.video-card');
-        if (!videoCard) return;
-        const { videoId, videoTitle } = (videoCard as HTMLElement).dataset;
-        if (!videoId || !videoTitle) return;
-        modalContent.innerHTML = '';
-        modalContent.appendChild(createVimeoIframe(videoId, videoTitle));
-        modal.showModal();
-        document.body.style.overflow = 'hidden';
-      });
-      const closeModal = () => modal.close();
-      closeBtn.addEventListener('click', closeModal);
-      modal.addEventListener('click', (event) => {
-        if (event.target === modal) closeModal();
-      });
-      modal.addEventListener('close', () => {
-        modalContent.innerHTML = '';
-        document.body.style.overflow = '';
-      });
-    }
-    document.addEventListener('DOMContentLoaded', setupVideoModal);
-  </script>
 </section>
+
+<script define:vars={{ videos }}>
+  const videoGrid = document.getElementById('video-grid');
+
+  if (videoGrid) {
+    videoGrid.addEventListener('click', (event) => {
+      if (!event.target) return;
+      const card = event.target.closest('.video-card');
+      if (!card) return;
+
+      const isPlaying = card.querySelector('iframe');
+      if (isPlaying) return;
+
+      resetAllCards(card);
+
+      const videoId = card.dataset.videoId;
+      const videoTitle = card.dataset.videoTitle;
+      if (!videoId) return;
+
+      const player = createVimeoPlayer(videoId, videoTitle || 'Video');
+      const iframe = player.querySelector('iframe');
+
+      card.innerHTML = '';
+      card.appendChild(player);
+
+      if (iframe) {
+        iframe.onload = () => {
+          try {
+            if (iframe.requestFullscreen) {
+              iframe.requestFullscreen();
+            } else if (iframe.webkitRequestFullscreen) {
+              iframe.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) {
+              iframe.msRequestFullscreen();
+            }
+          } catch (e) {
+            console.error("No se pudo iniciar el modo de pantalla completa:", e);
+          }
+        };
+      }
+    });
+  }
+
+  function createVimeoPlayer(id, title) {
+    const playerDiv = document.createElement('div');
+    playerDiv.className = 'video-card__player';
+    const iframe = document.createElement('iframe');
+    const vimeoParams = `?autoplay=1&responsive=1&playsinline=1&controls=1&title=0&byline=0&portrait=0&dnt=1&autopause=0`;
+    iframe.src = `https://player.vimeo.com/video/${id}${vimeoParams}`;
+    iframe.title = `Reproductor de video: ${title}`;
+    iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+    iframe.setAttribute('allowfullscreen', '');
+    playerDiv.appendChild(iframe);
+    return playerDiv;
+  }
+
+  function resetAllCards(currentCardToExclude) {
+    const allCards = document.querySelectorAll('.video-card');
+    allCards.forEach(card => {
+      if (card === currentCardToExclude) return;
+
+      const player = card.querySelector('.video-card__player');
+      if (player) {
+        const videoId = card.dataset.videoId;
+        const videoTitle = card.dataset.videoTitle;
+        
+        if (!videoId || !videoTitle) return;
+
+        const originalVideoData = videos.find(v => v.id === videoId);
+        
+        if (originalVideoData) {
+            const thumbUrl = originalVideoData.thumbUrl;
+            card.innerHTML = `
+            <button class="video-card__thumbnail-container" aria-label="Reproducir video: ${videoTitle}">
+                <img class="video-card__thumb" src="${thumbUrl}" alt="Miniatura del video: ${videoTitle}" loading="lazy" width="320" height="180"/>
+                <div class="video-card__overlay">
+                <div class="video-card__play-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.14v14l11-7z"></path></svg></div>
+                <h3 class="video-card__title">${videoTitle}</h3>
+                </div>
+            </button>
+            `;
+        }
+      }
+    });
+  }
+</script>
