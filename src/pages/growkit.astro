@@ -1,23 +1,33 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import Checkout from '@/components/checkout/checkout.astro';
-
-
-
- 
+import Faq from '@/components/faq/Faq.astro';
 ---
 
 <Layout
-  title="Comprar Grow Kit Psilocybu - Envío Gratis Colombia"
-  description="Adquiere tu Grow Kit de Psilocybe cubensis (Villa de Leyva). Incluye todo lo necesario para tu cultivo. Pago seguro y envío rápido."
+  title="Kit de Cultivo de Hongos Psilocybe | Psilocybu Colombia"
+  description="Compra el mejor kit de cultivo de hongos en Colombia. Ideal para principiantes y estudios micológicos. Cosecha rápida y envío gratis. ¡Adquiere tu kit Psilocybu hoy!"
 >
+  <main>
+    <section class="product-intro">
+      <div class="product-container">
+        <h2>Tu Aventura Micológica Comienza Aquí</h2>
+        <p>
+          Nuestro kit de cultivo de hongos Psilocybu es la puerta de entrada perfecta al fascinante mundo de la micología. Diseñado tanto para principiantes curiosos como para entusiastas que deseen realizar estudios etnobotánicos, este kit te proporciona todo lo necesario para un cultivo casero exitoso en Colombia. Olvídate de procesos complicados y equipos costosos; con Psilocybu, cultivar hongos es una experiencia sencilla, educativa y gratificante.
+        </p>
+      </div>
+    </section>
+    <Checkout />
+    <Faq />
+  </main>
+
   <script type="application/ld+json" slot="head">
     {
       "@context": "https://schema.org/",
       "@type": "Product",
-      "name": "Psilocybu Grow Kit Premium",
-      "image": "URL_A_LA_IMAGEN_PRINCIPAL_DEL_PRODUCTO",
-      "description": "Grow kit completo para el cultivo de hongos Psilocybe cubensis variedad Villa de Leyva. Incluye micelio, bolsa de fructificación y todo lo necesario.",
+      "name": "Kit de Cultivo de Hongos Psilocybe | Psilocybu Colombia",
+      "image": "https://www.psilocybu.com/assets/growkit-psilocybu.png",
+      "description": "El kit de cultivo de hongos de Psilocybu es perfecto para principiantes en Colombia. Incluye todo lo necesario para el estudio micológico y cultivo casero de la variedad Psilocybe cubensis. Cosecha rápida y soporte garantizado.",
       "brand": {
         "@type": "Brand",
         "name": "Psilocybu"
@@ -43,5 +53,29 @@ import Checkout from '@/components/checkout/checkout.astro';
       }
     }
   </script>
-  <Checkout />
+
+  <style>
+    .product-intro {
+      padding: var(--spacing-lg) var(--side-gutter);
+      background-color: #fff;
+    }
+    .product-container {
+      max-width: var(--site-max-width);
+      margin: 0 auto;
+      text-align: center;
+    }
+    .product-container h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-family: var(--font-family-headings, 'Quicksand');
+      font-weight: 700;
+      margin-bottom: var(--spacing-md);
+    }
+    .product-container p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      max-width: 800px;
+      margin: 0 auto;
+      color: #333;
+    }
+  </style>
 </Layout>
